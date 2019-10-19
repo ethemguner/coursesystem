@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load course_price_calc %}
+{% block TITLE %}Ödeme Bildirimi{% endblock %}
+
+{% block BODY %}
+
+    {% include 'nav-bar.html' %}
+    <div class="container-fluid" style="margin-top: 180px;">
+        <div class="row justify-content-center h-100">
+            <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 ">
+                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 offset-2">
+                    <h2 class="panel-headers text-center">Kurs Ödeme Bildirimi</h2>
+                    <p class="lead">Şu kurs için ödeme bildirimi yapıyorsunuz: {{ course.name }}</p>
+                    <p class="lead">
+                        Ödeme yapmanız gereken tutar:
+                        {% if request.user.profile.title == "3" %}
+                            {{ course.price }}TL
+                        {% elif request.user.profile.title == "1" %}
+                            {{ course_price_calc|discount_1:course.price }}
+                        {% elif request.user.profile.title == "2" %}
+                            {{ course_price_calc|discount_2:course.price }}
+                        {% endif %}
+                    </p>
+                    <p class="lead" style="font-size: 22px;"><strong>Banka Hesap Bilgileri</strong></p>
+                    <p class="lead">
+                        {{ course_price_calc|get_bank|linebreaksbr }}
+                    </p>
+                    <p>
+                        <button class="btn btn-warning" title="Henüz aktif değil." disabled>Online Ödeme Yap</button>
+                    </p>
+                    <h4>Mevcut Belgeniz:</h4>
+                    {% if request.user.profile.title == "1" or request.user.profile.title == "2" %}
+                        {% if profile.get_image == None %}
+                            <p class="text-danger">Yüklemiş olduğunuz bir belge bulunamadı. Yüklemek için
+                            <a href="{% url 'update' %}">tıklayınız.</a>
+                        {% else %}
+                            <img src="{{ profile.get_image }}" class=""><br>
+                        {% endif %}
+                    {% else %}
+                        <p>Kurum bağlantınız "Kurum Dışı" olarak seçildiği için belge yüklemenize gerek yoktur.</p>
+                    {% endif %}
+                </div>
+                <form method="post" action="{% url 'send-payment' course.registering_extension %}"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- FORM FIELDS-->
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 offset-2">
+                                    <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                        <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if field.help_text %}
+                                            <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-md-8 offset-2">
+                            {% if request.user.profile.title == "1" or request.user.profile.title == "2" %}
+                                {% if profile.get_image == None %}
+                                    <input type="submit" class="btn btn-primary float-lg-right"
+                                           value="Ödeme Bildirimini Gönder"
+                                           style="margin-top: 10px" disabled>
+                                {% else %}
+                                    <input type="submit" class="btn btn-primary float-lg-right"
+                                           value="Ödeme Bildirimini Gönder"
+                                           style="margin-top: 10px">
+                                {% endif %}
+                            {% else %}
+                                <input type="submit" class="btn btn-primary float-lg-right"
+                                       value="Ödeme Bildirimini Gönder"
+                                       style="margin-top: 10px">
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

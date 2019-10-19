@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block TITLE %}Talep Detay{% endblock %}
+
+{% block BODY %}
+
+    {% include 'admin/admin-navbar.html' %}
+    <div class="container-fluid" style="margin-top: 75px">
+        <div class="row">
+            <div class="col-lg-6 offset-3">
+                <div class="text-center">
+                    <h2>"{{ course_request.request_title }}" Talebi</h2>
+                    <hr>
+                </div>
+
+                <div class="float-lg-left">
+                    <p><b>Gönderen: </b>{{ course_request.user.get_full_name }} | <b>Kullanıcı
+                        adı: </b>{{ course_request.user.username }}</p>
+                    <p><b>Minimum kontenjan: </b>{{ course_request.limit_min }}</p>
+                    <p><b>Maksimum kontenjan: </b>{{ course_request.limit_max }}</p><br>
+                    <h4>Kurs İçerik:</h4>
+                    <p class="lead">{{ course_request.request_content }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}

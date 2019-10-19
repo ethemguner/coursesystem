@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block TITLE %}Ön Başvurular{% endblock %}
+
+{% block BODY %}
+
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        <div class="row justify-content-center h-100" style="margin-top: 75px;">
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                    <div class="table-responsive">
+                        <table class="table  table-responsive-md table-responsive-lg table-responsive-sm table-bordered">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    KULLANICILAR
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for user in who_app %}
+                                <tr>
+                                    <th scope="row" style="font-family: 'Calibri Light'; font-size: 16px">
+                                        {{ forloop.counter }}
+                                    </th>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px" class="text-center">
+                                        {{ user|join:"," }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

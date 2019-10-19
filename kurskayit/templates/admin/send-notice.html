@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block TITLE %}Duyuru Yayınla{% endblock %}
+
+{% block BODY %}
+
+    {% include 'admin/admin-navbar.html' %}
+    {% include 'message.html' %}
+    <div class="col-lg-6 offset-3">
+        <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Duyuru Yayınla</h1>
+        <hr>
+        <p class="lead">Bu kurs için {{ profiles|length }} adet kullanıcıya e-mail gönderilecektir.</p>
+    </div>
+    <div class="container-fluid">
+        <div class="row justify-content-center h-100">
+            <div class="col-lg-12 offset-6">
+                <form method="post" action="{% url 'send-notice' course_code %}">
+                    {% csrf_token %}
+                    <!-- FORM FIELDS-->
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                    <label class="control-label" style="color: #0f0f0f"
+                                           for="{{ field.id_for_label }}">
+                                        <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if field.help_text %}
+                                            <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="submit" class="btn btn-success float-lg-right" value="Yayınla"
+                                   style="margin-top: 10px">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

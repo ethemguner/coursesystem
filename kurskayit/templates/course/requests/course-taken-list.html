@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block TITLE %}Kurs Alma Talepleri{% endblock %}
+
+{% block HEAD %}
+
+    <script type="text/javascript" rel="script">
+
+        $(document).ready(function () {
+            $(".deleteRequest").click(function () {
+                if (confirm('Bu talebi silmek istediğinizden emin misiniz?')) {
+                    var $this = $(this);
+                    var $reqid = $this.attr('reqid');
+                    var $url = $this.attr('url');
+                    var data = {reqid: $reqid};
+
+                    $.ajax({
+                        url: $url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: data,
+                        success: function (data) {
+                            location.reload();
+                        }
+                    })
+                }
+            })
+        })
+
+    </script>
+
+{% endblock %}
+
+{% block BODY %}
+
+    <div class="container-fluid">
+    {% include 'admin/admin-navbar.html' %}
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6  offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3" style="margin-top: 75px;">
+            <h1 class="text-center course-prereg-header" style="color: darkblue">Kurs Alma Talebinde Bulunanlar</h1>
+            <hr>
+        </div>
+        <div class="row justify-content-center h-100">
+            <div class="col-lg-6">
+                <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                    {% for c_request in course_request %}
+                        <div class="card">
+                            <div class="card-header">
+                                {{ c_request.request_title }}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ c_request }}</h5>
+                                <p class="card-text">{{ c_request.request_content }}</p>
+                                <p><b>Telefon numarası: </b>+90{{ c_request.user.profile.phone }}</p>
+                                <p><b>Diğer telefon numarası: </b>+90{{ c_request.user.profile.other_phone }}</p>
+                                <p><b>E-mail adresi: </b> {{ c_request.user.email }}</p>
+                                <a href="#" class="deleteRequest btn btn-danger float-lg-right"
+                                   reqid="{{ c_request.id }}"
+                                   url="{% url 'delete-taken-request' %}">
+                                    <i class="fa fa-trash-o"></i>
+                                    Talebi Sil</a>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <h3 class="text-danger">Herhangi bir talep bulunamadı.</h3>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

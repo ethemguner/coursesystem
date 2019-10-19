@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block TITLE %}Profilim{% endblock %}
+
+{% block BODY %}
+    {% include 'nav-bar.html' %}
+    <div class="container-fluid" style="margin-top: 180px;">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3">
+        <h1>Profil Bilgilerim</h1>
+        <hr>
+        <p style="font-family: 'Calibri'">Merhaba {{ request.user.get_full_name }}. Bu sayfada bilgileriniz güncelleyebilirsiniz. Kurum bağlantınıza
+        göre ilgili belgeyi yüklemeyi unutmayınız. Ödeme bildirimi aldığımızda bu belgeye göre kurum bağlantınız
+        onaylanır ve indirim uygulanır.</p>
+    </div>
+        <div class="row justify-content-center h-100" style="margin-top: 30px;">
+            <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3">
+                <div class="card border-secondary mb-3" style="max-width: 20rem;">
+                    <div class="card-header">Profilim</div>
+                    <div class="card-body text-secondary">
+                        <h5 class="card-title">Şifre Yönetimi</h5>
+                        <p class="card-text">Şifrenizi alttan değiştirebilirsiniz.</p>
+                        <p></p>
+                        <p><a href="{% url 'password-change' %}">Şifre değiştir.</a> </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <form method="post" action="{% url 'update' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- FORM FIELDS-->
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                        <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if field.help_text %}
+                                            <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            <input type="submit" class="btn btn-success float-lg-right" value="Güncelle"
+                                   style="margin-top: 10px">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

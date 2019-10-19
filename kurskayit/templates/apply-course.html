@@ -1,0 +1,43 @@
+    {% extends 'base.html' %}
+{% load static %}
+{% load course_price_calc %}
+{% block TITLE %}Ödeme Bildirimi{% endblock %}
+
+{% block BODY %}
+
+    {% include 'nav-bar.html' %}
+    <div class="container-fluid" style="margin-top: 180px;">
+        <div class="row" style="margin-top: 100px">
+            <div class="col-sm-6 col-md-6 col-lg-6 offset-3">
+                <div class="col-md-8 offset-2 text-center">
+                    <h2 class="panel-headers">Kurs Ön Başvuru</h2>
+                    <p class="lead">Şu kurs için ön başvuru yapıyorsunuz: {{ course.name }}</p>
+                    <p class="lead">
+                        Yeterli kontenjan oluştuduğunda kesin kayıt için e-mail adresinize mail gönderilecektir.
+                        Mail içeriğinde ödeme ile alakalı gerekli bilgiler verilecektir.
+                    </p>
+                    <h4>UYARI:</h4>
+                    <p class="lead">Lütfen bilgilerinizi "Bilgilerim" kısmından kontrol ediniz.
+                        Kesin kayıtlar açıldığında bu bilgiler doğrultusunda ödeme bildiriminde bulunacaksınız.
+                    </p>
+                    <p style="font-family: Bahnschrift;">
+                        <u>"BAŞVUR" butonuna bastığınızda ön başvuru için sistemimize bilgileriniz kaydedilir.
+                        Bu kursa kesin kayıt değildir. Herhangi bir ödeme yapmanız gerekmez.</u>
+                    </p>
+                </div>
+                <form method="post" action="{% url 'send-application' course.course_code %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-8 offset-2 text-center">
+                            <input type="submit" class="btn btn-primary"
+                                                            value="BAŞVUR"
+                                                            style="margin-top: 10px;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

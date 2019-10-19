@@ -1,0 +1,17 @@
+Django==2.2.5
+Pillow==6.2.0
+PyPDF2==1.26.0
+Unidecode==1.1.1
+django-cleanup==4.0.0
+html5lib==1.0.1
+pip==19.2.3
+python-dateutil==2.8.0
+pytz==2019.2
+reportlab==3.5.28
+setuptools==41.2.0
+si==1.12.0
+sqlparse==0.3.0
+webencodings==0.5.1
+wheel==0.33.6
+xhtml2pdf==0.2.3
+xlwt==1.3.0

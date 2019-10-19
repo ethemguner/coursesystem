@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block TITLE %}Sertifika Talep Listeleri{% endblock %}
+
+{% block BODY %}
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        {% include 'message.html' %}
+        <div class="col-lg-6 offset-3">
+            <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Sertifika Talepleri
+                ({{ certifications.count }})</h1>
+            <hr>
+        </div>
+        <div class="row justify-content-center h-100">
+            <div class="col-lg-6">
+                <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                    <div class="table-responsive">
+                        <table class="table  table-responsive-md table-responsive-lg table-responsive-sm table-bordered table-dark">
+                            <thead>
+                            <tr>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    AD & SOYAD
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    KURSU
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    İŞLEM
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for certification in certifications %}
+                                <tr>
+                                    <th scope="row" style="font-family: 'Calibri Light'; font-size: 16px">
+                                        {{ forloop.counter }}
+                                    </th>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        {{ certification.user.get_full_name }}
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        {{ certification.course.name }}
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        <div class="text-center">
+                                            {% if certification.is_downloadable %}
+                                            <p class="text-warning">Sertifika yüklenmiş.</p>
+                                            {% else %}
+                                            <button class="showInformation btn btn-primary">
+                                                <i class="fa fa-file-pdf-o"></i>
+                                                <a href="{% url 'upload-certificate' certification.user.username certification.course.course_code %}"
+                                                   style="color: white">
+                                                    SERTİFİKA YÜKLE
+                                                </a>
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% load request_notifications %}
+{% load payment_notifications %}
+{% load finalregs %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light"
+     style="height: 100px; border-bottom-left-radius: 34px; border-bottom-right-radius: 34px;">
+    <a class="navbar-brand" href="{% url 'panel' %}" style="font-family: 'Trebuchet MS'; font-size: 26px;"><b>Yönetim
+        Paneli</b></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link admin-nav-texts" style="color: black" href="{% url 'panel' %}">
+                    Ödemeler
+
+                    {% if payment_notifications|get_notifications > 0 %}
+                        <span class="badge badge-dark" style="font-family: 'Trebuchet MS'; font-size: 15px;">
+                        <i class="fa fa-bell"></i> {{ payment_notifications|get_notifications }}
+                    </span>
+                    {% elif payment_notifications|get_notifications == 0 %}
+                        <span class="badge badge-dark" style="font-family: 'Trebuchet MS'; font-size: 15px;">
+                        0
+                    </span>
+                    {% endif %}
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link admin-nav-texts" style="color: black" href="{% url 'preregs' %}">
+                    Ön Başvurular</a>
+            </li>
+            <li class="nav-item dropdown admin-nav-texts">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="color: black">
+                    Gelen Kurs Talepleri
+                    {% if request_notifications|request_notifications > 0 %}
+                        <span class="badge badge-dark" style="font-family: 'Trebuchet MS'; font-size: 15px;">
+                        <i class="fa fa-bell"></i> {{ request_notifications|request_notifications }}
+                    </span>
+                    {% elif request_notifications|request_notifications == 0 %}
+                        <span class="badge badge-dark" style="font-family: 'Trebuchet MS'; font-size: 15px;">
+                        0
+                    </span>
+                    {% endif %}
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 19px;">
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-given-list' %}">
+                        Kurs Vermek İsteyenler
+                    </a>
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-taken-list' %}">
+                        Kurs Almak İsteyenler
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link admin-nav-texts" style="color: black" href="{% url 'active-courses' %}">Kesin
+                    Kayıtlar
+                    <span class="badge badge-dark" style="font-family: 'Trebuchet MS'; font-size: 15px;">
+                        {{ finalregs|finalregs_notifications }}
+                    </span>
+                </a>
+            </li>
+            <li class="nav-item dropdown admin-nav-texts">
+
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="color: black">
+                    Kurslar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 19px;">
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-add' %}">
+                        <i class="fa fa-plus-square-o"></i>
+                        Kurs Aç
+                    </a>
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-list' %}">
+                        <i class="fa fa-pencil-square-o"></i>
+                        Kurs Düzenle & Duyuru Yayınla
+                    </a>
+
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-discount' %}">
+                        <i class="fa fa-cart-arrow-down"></i>
+                        İndirim & Banka Bilgileri
+                    </a>
+
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link admin-nav-texts" style="color: black" href="{% url 'delete-images-page' %}">
+                    Belge Kontrol</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link admin-nav-texts" style="color: black" href="{% url 'certification-list' %}">
+                    Sertifika Talepleri</a>
+            </li>
+        </ul>
+        <span class="navbar-text">
+        <a href="{% url 'logout' %}" style="color: black; font-size: 18px;"><i class="fa fa-sign-out"></i>Çıkış Yap</a>
+    </span>
+    </div>
+</nav>

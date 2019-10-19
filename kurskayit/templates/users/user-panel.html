@@ -1,0 +1,176 @@
+{% load static %}
+{% load course_status %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Kullanıcı Paneli | {{ request.user.username }}</title>
+</head>
+<body>
+{% include 'nav-bar.html' %}
+<div class="container-fluid" style="margin-top: 190px;">
+    {% include 'message.html' %}
+    <div class="row justify-content-center h-100">
+        <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <h1 style="font-family: 'Trebuchet MS'">Kullanıcı Paneli</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <h3 class="text-center" style="font-family: 'Trebuchet MS';">Tüm Kurslar</h3>
+                <hr>
+            </div>
+            <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                <table class="table table-bordered table-hover table-responsive-sm table-responsive-sm table-responsive-lg table-responsive-xl">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">KURS</th>
+                        <th scope="col">BAŞLANGIÇ</th>
+                        <th scope="col">BİTİŞ</th>
+                        <th scope="col">DURUM</th>
+                        <th scope="col">İŞLEM</th>
+                        <th scope="col">KURS DETAY</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in courses %}
+                        {% if course.status == "1" %}
+                            <tr class="table-warning" style="font-family: 'Calibri'">
+                                {% elif course.status == "2" %}
+                            <tr class="table-success" style="font-family: 'Calibri'">
+                                {% elif course.status == "3" %}
+                            <tr class="table-success" style="font-family: 'Calibri'">
+                                {% else %}
+                            <tr class="table-danger" style="font-family: 'Calibri'">
+                        {% endif %}
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ course.name }}</td>
+                    <td>{{ course.start_at }}</td>
+                    <td>{{ course.finish_at }}</td>
+                    <td>{{ course_status|get_status:course.status }}</td>
+                    <td class="text-center">
+                        {% if course.status == "2" or course.status == "3" %}
+                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-file-text-o"></i>
+                                {% if course.is_registerable == False %}
+                                    <a href="{% url 'send-application' course.course_code %}" style="color: white">BAŞVUR</a>
+                                {% else %}
+                                    <a href="{% url 'send-payment' course.registering_extension %}"
+                                       style="color: white">KAYDOL</a>
+                                {% endif %}
+                            </button>
+                        {% else %}
+                            <u>Başvuru yapılamaz.</u>
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'course-detail' course.course_code %}" style="color: black">İçeriğini
+                        görüntüle.</a></td>
+                    </tr>
+                    {% empty %}
+                        <tr class="text-danger" style="font-family: 'Calibri'">
+                            <th scope="col">1</th>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <p>
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
+                       aria-expanded="false" aria-controls="collapseExample">
+                        <i class="fa fa-tasks"></i> Kategoriye göre filtrele
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <div class="card card-body">
+                        <form method="get" action="{% url 'user-panel' %}">
+                            <!-- FORM FIELDS-->
+                            {% for field in form %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
+                                            <label class="control-label" style="color: #0f0f0f"
+                                                   for="{{ field.id_for_label }}">
+                                                <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                            </label>
+                                            {{ field }}
+                                            {% if field.errors %}
+                                                {% for error in field.errors %}
+                                                    <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                                {% endfor %}
+                                            {% else %}
+                                                {% if field.help_text %}
+                                                    <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div class="row">
+                                <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
+                                    <input type="submit" class="btn btn-success float-lg-right" value="Filtrele"
+                                           style="margin-top: 10px">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <h3 class="text-center" style="font-family: 'Trebuchet MS'">Kurslarım</h3>
+            <hr>
+            <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">KURS</th>
+                        <th scope="col">BAŞLANGIÇ</th>
+                        <th scope="col">BİTİŞ</th>
+                        <th scope="col">SERTİFİKA</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for user_course in user_courses %}
+                        <tr style="font-family: 'Calibri'">
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td><b>{{ user_course.name }}</b></td>
+                            <td><b>{{ user_course.start_at }}</b></td>
+                            <td><b>{{ user_course.finish_at }}</b></td>
+                            {% if user_course.certificate_set.get.certificate %}
+                                <td><b><a href="{{ user_course.certificate_set.get.certificate.url }}">İNDİR & GÖRÜNTÜLE</a></b></td>
+                            {% else %}
+                                <td><b><a href="{% url 'send-certificationrequest' user_course.id %}">SERTİFİKA TALEP ET</a></b></td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr class="text-danger" style="font-family: 'Calibri'">
+                            <th scope="col">1</th>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                            <td>Bilgi yok.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'footer.html' %}
+</body>
+</html>

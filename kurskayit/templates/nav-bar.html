@@ -1,0 +1,53 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top"
+     style="border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;">
+    <nav class="navbar navbar-light bg-dark">
+        <a class="navbar-brand" href="{% url 'user-panel' %}">
+            <img src="{% static 'img/ege.png' %}" style="height: 85px; width: 85px; margin-top: 0;"
+                 class="nav-img d-inline-block align-top" alt="">
+        </a>
+    </nav>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-texts nav-link" href="{% url 'user-panel' %}" style="color: floralwhite">
+                    Anasayfa
+                    <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown admin-nav-texts">
+
+                <a class="nav-texts nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="color: whitesmoke">
+                    Kurs Talep
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 19px;">
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-given-request' %}">
+                        Kurs Vermek İstiyorum
+                    </a>
+                    <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-taken-request' %}">
+                        Kurs Almak İstiyorum
+                    </a>
+                </div>
+            </li>
+            </li>
+            <li class="nav-item">
+                <a class="nav-texts nav-link" href="{% url 'update' %}" style="color: floralwhite">
+                    Profilim
+                </a>
+            </li>
+        </ul>
+        <span class="navbar-text"
+              style="color: lightgray; font-family: Bahnschrift Light; font-size: 18px; margin-right: 25px;">
+                <p>{{ request.user.get_full_name }}, hoşgeldiniz.</p>
+            <p class="float-lg-right"> <a href="{% url 'logout' %}" style="color: lightgray;"><i
+                    class="fa fa-sign-out"></i> Çıkış yap.</a></p>
+            </span>
+    </div>
+</nav>
+
+
+

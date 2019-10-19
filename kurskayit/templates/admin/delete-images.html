@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block TITLE %}Belgeleri Sil{% endblock %}
+
+{% block HEAD %}
+    <script rel="script" type="text/javascript">
+
+        $(document).ready(function () {
+            $(".deleteImages").click(function () {
+                if (confirm('Belgeler silinecektir. Emin misiniz?')) {
+                    var $this = $(this);
+                    var $url = $this.attr('url');
+
+                    $('.ajaxProgress').show();
+                    $.ajax({
+                        url: $url,
+                        method: 'GET',
+                        dataType: 'json',
+                        data: {},
+                        success: function () {
+                            location.reload();
+                            $('.ajaxProgress').hide();
+                        }
+                    })
+                }
+            })
+        })
+
+    </script>
+
+{% endblock %}
+{% block BODY %}
+
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        {% include 'message.html' %}
+        <div class="row justify-content-center">
+            <div class="col-lg-8" style="margin-top: 75px;">
+                <div class="text-center">
+                    <h1 style="color: darkblue; font-family: Bahnschrift">Kullanıcı Belge Kontrol</h1>
+                    <p><b><u>UYARI:</u></b> {{ users|length }} adet kullanıcının belge kontrolü yapılacaktır.</p>
+                    <p>Belge geçerlilik süresi dolanların (1 yıl) belgeleri silinecektir ve bilgi gönderilecektir.</p>
+                    <button class="deleteImages btn btn-danger" type="submit"
+                            url= {% url 'image-control' %}>
+                        Kontrolü Başlat
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="ajaxProgress">
+            <img src="{% static 'img/ajax-loader.gif' %}" class="loader" style="width: 50px; height: 50px;">
+        </div>
+    </div>
+{% endblock %}

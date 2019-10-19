@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block TITLE %}Kurs Listesi{% endblock %}
+
+{% block BODY %}
+
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        <div class="row" style="margin-top: 75px;">
+            <div class="col-lg-6 offset-3">
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Kurslar ({{ courses.count }})</h1>
+                <hr>
+                <table class="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">KURS</th>
+                        <th scope="col">BAŞLANGIÇ</th>
+                        <th scope="col">BİTİŞ</th>
+                        <th scope="col">İŞLEM</th>
+                        <th scope="col">DUYURU</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for course in courses %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter }}</th>
+                            <td>{{ course.name }}</td>
+                            <td>{{ course.start_at }}</td>
+                            <td>{{ course.finish_at }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-pencil-square-o"></i> <a
+                                        href="{% url 'course-edit' course.course_code %}"
+                                        style="color: white">DÜZENLE</a>
+                                </button>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-warning btn-sm">
+                                    <i class="fa fa-bullhorn"></i> <a
+                                        href="{% url 'send-notice' course.course_code %}"
+                                        style="color: black">DUYURU YAYINLA</a>
+                                </button>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <th scope="row">1</th>
+                        <td>Bilgi yok</td>
+                        <td>Bilgi yok</td>
+                        <td>Bilgi yok</td>
+                        <td>Bilgi yok</td>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

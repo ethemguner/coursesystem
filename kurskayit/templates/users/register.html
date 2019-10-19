@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {% block HEAD %}{% endblock %}
+    <title>Ege Üni. UZEM | Kayıt ol</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="height: 1080px">
+        <!--LEFT SIDE OF PAGE (COURSE INFO AND BANNER) -->
+        <div class="col-sm-7 col-md-7 col-lg-7" style="background-color: rgb(33,66,99);">
+            <img src="{% static 'img/ege.png' %}">
+            <h1 class="course-info-header text-center" style="margin-top: 75px">Ege Üniversitesi UZEM</h1>
+            <p class="course-info-text text-center">
+                Sistemimize kayıt olarak aktif kursları, kayıtlandığınız kursları, çeşitli kurs duyurularını ve
+                bitirdiğiniz kursları anlık olarak görüntüleyebilirsiniz. Kurs başvurularını da bu sistem üzerinden
+                gerçekleştirebilirsiniz. Kurs başvurusu hakkındaki bilgiler mail adresinize gönderilecektir.
+            </p>
+            <p class="course-info-text text-center">
+                Kurs talep sistemimiz aktiftir. Bir kursun açılmasını talep edebilirsiniz ve eğer yeterince
+                talep alınırsa bu kurs açılacaktır.
+            </p>
+            <!--CONTACT-->
+            <h1 class="course-info-header text-center" style="margin-top: 50px">İletişim</h1>
+            <p class="course-contact-text text-center"><i class="fa fa-envelope-square"></i> ethemguener@gmail.com</p>
+            <p class="course-contact-text text-center"><i class="fa fa-phone-square"></i> +90 507 868 2754</p>
+            <p class="course-contact-text text-center">
+                <a href="#" class="course-contact-text">Harici link</a>
+            </p>
+            <h3 class="text-center"><a href="{% url 'login' %}" style="color: whitesmoke">Giriş sayfasına git.</a> </h3>
+        </div>
+        <!--RIGHT SIDE OF PAGE (PREREGISTRATION FORM) -->
+        <div class="col-sm-5 col-md-5 col-lg-5" style="background-color: whitesmoke;">
+            <h2 class="text-center course-prereg-header" style="margin-top: 15px; color: darkblue">Ege UZEM Kayıt Formu</h2>
+            <form method="post" action="{% url 'register' %}">
+                {% csrf_token %}
+                <!-- FORM FIELDS-->
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8 offset-2">
+                                <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                    <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                </label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-sm-8 col-lg-8 col-md-8 offset-2">
+                        <input type="submit" class="btn btn-success float-lg-right" value="Kayıt Ol"
+                               style="margin-top: 10px">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

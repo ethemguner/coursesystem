@@ -1,0 +1,80 @@
+.div_center {
+    width: 50%;
+    margin: 0 auto;
+}
+
+.course-info-header {
+    font-family: "Bahnschrift";
+    color: floralwhite;
+}
+
+.course-info-text {
+    font-family: "Corbel Light";
+    font-size: 20px;
+    color: lightgray;
+}
+
+.course-contact-text {
+    font-family: "Calibri Light";
+    font-size: 20px;
+    color: lightgray;
+}
+
+img {
+    height: 170px;
+    width: 170px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.course-help-text {
+    color: gray;
+    font-family: "Calibri Light", serif;
+}
+
+.course-prereg-header {
+    color: black;
+    font-family: Bahnschrift, serif;
+}
+
+.panel-top-row {
+    height: 110px;
+    background-color: darkblue;
+    border-bottom-right-radius: 300px;
+    border-bottom-left-radius: 300px;
+}
+
+.panel-headers {
+    color: black;
+    font-family: "Calibri", serif;
+}
+
+.ajaxProgress {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -50px 0px 0px -50px;
+}
+
+.myFooter {
+    background-color: gray;
+}
+
+.nav-texts {
+    font-family: 'Bahnschrift Light', serif;
+    font-size: 23px;
+}
+
+.admin-nav-texts {
+    font-family: 'Corbel Light', serif;
+    font-size: 22px;
+    color: black;
+}
+
+.dropdown-menu-texts {
+    font-family: 'Corbel Light', serif;
+    font-size: 19px;
+}

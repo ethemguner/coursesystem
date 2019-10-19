@@ -1,0 +1,68 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
+    <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    {% block HEAD %}{% endblock %}
+    <title>Ege Üni. UZEM | Giriş yap</title>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row" style="height: 1080px;">
+        <div class="col-sm-6 col-md-6 col-lg-6" style="background-color: rgb(33,66,99);">
+            <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 200px; color: honeydew">
+                <h1 class="text-center" style="margin-bottom: 75px">Logo alanı</h1>
+                <h1 class="text-center" style="color: whitesmoke; font-size: 64px; font-family: 'Calibri'">
+                    Hoşgeldiniz.</h1>
+                <p class="text-center" style="color: lightgray; font-size: 25px; font-family: Bahnschrift">Text / link
+                    alanı.</p><br><br>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 250px;">
+            <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Ege UZEM
+                Kullanıcı Girişi</h1>
+            <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+                <!-- FORM FIELDS-->
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
+                                <label class="control-label" style="color: #0f0f0f"
+                                       for="{{ field.id_for_label }}">
+                                    <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                </label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    {% for error in field.errors %}
+                                        <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                    {% endfor %}
+                                {% else %}
+                                    {% if field.help_text %}
+                                        <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="row">
+                    <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
+                        <a href="{% url 'forgot-password' %}">Şifremi unuttum.</a>
+                        <input type="submit" class="btn btn-success float-lg-right" value="Giriş Yap"
+                               style="margin-top: 10px">
+                        <p style="margin-top: 10px;">Hesabınız yok mu? <a href="{% url 'register' %}">Kaydolun.</a></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

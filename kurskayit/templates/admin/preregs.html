@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block TITLE %}Ön Başvurular{% endblock %}
+{% load static %}
+{% load course_status %}
+{% block HEAD %}
+    <script type="text/javascript" rel="script">
+
+        $(document).ready(function () {
+            $(".sendPaymentPage").click(function () {
+                if (confirm('Ön başvuru yapanlara kesin kayıtların açıldığı hakkında e-mail gönderilecektir. Emin misiniz?')) {
+                    var $this = $(this);
+                    var $course_code = $this.attr('course_code');
+                    var $url = $this.attr('url');
+                    var data = {course_code: $course_code};
+
+                    $('.ajaxProgress').show();
+                    $.ajax({
+                        url: $url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: data,
+                        success: function () {
+                            location.reload();
+                            $('.ajaxProgress').hide();
+                        }
+                    });
+                }
+            });
+
+            $(".cancelCourse").click(function () {
+                if (confirm('Kursiyerlere kesin kayıtların açıldığı hakkında e-mail gönderilecektir. Emin misiniz?')) {
+                    var $this = $(this);
+                    var $course_code = $this.attr('course_code');
+                    var $url = $this.attr('url');
+                    var data = {course_code: $course_code};
+
+                    $('.ajaxProgress').show();
+                    $.ajax({
+                        url: $url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: data,
+                        success: function () {
+                            location.reload();
+                            $('.ajaxProgress').hide();
+                        }
+                    });
+                }
+            })
+
+            $(".closeRegistration").click(function () {
+                if (confirm('Kurs kayıtları kapanacaktır. Emin misiniz?')) {
+                    var $this = $(this);
+                    var $url = $this.attr('url');
+                    var $ext = $this.attr('regex');
+
+                    var data = {'ext': $ext}
+                    $.ajax({
+                        url: $url,
+                        type: 'GET',
+                        dataType: 'json',
+                        data: data,
+                        success: function () {
+                            location.reload()
+                        }
+                    })
+                }
+            })
+        });
+
+    </script>
+
+{% endblock %}
+{% block BODY %}
+
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        {% include 'message.html' %}
+        <div class="row justify-content-center h-100" style="margin-top: 75px;">
+            <div class="col-lg-8">
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Kurs Yönetimi ve Ön Başvurular</h1>
+                <hr>
+                <div style="height: 450px; overflow-y: scroll; overflow: auto">
+                    <div class="table-responsive">
+                        <table class="table  table-responsive-md table-responsive-lg table-responsive-sm table-bordered">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    KURS
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    ÖN BAŞVURU SAYISI
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    KURS DURUM
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    BAŞVURANLAR LİSTESİ
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    İŞLEM
+                                </th>
+                                <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
+                                    class="text-center">
+                                    KAYIT KAPAT
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for course in courses %}
+                                <tr>
+                                    <th scope="row" style="font-family: 'Calibri Light'; font-size: 16px">
+                                        {{ forloop.counter }}
+                                    </th>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px" class="text-center">
+                                        {{ course.name }}
+                                    </td>
+
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px" class="text-center">
+                                        {{ course.prereg.count }}
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px" class="text-center">
+                                        {{ course_status|get_status:course.status }}
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        <form action="{% url 'who-applied' course.course_code %}" method="post">
+                                            {% csrf_token %}
+                                            <div class="text-center">
+                                                <input class="btn btn-primary"
+                                                       type="submit" value="Görüntüle">
+                                            </div>
+                                        </form>
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        <div class="text-center">
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <button class="sendPaymentPage btn btn-success"
+                                                        course_code="{{ course.course_code }}"
+                                                        url="{% url 'send-mails' %}">
+                                                    <i class="fa fa-check"></i> Kesin Kayıtları Aç
+                                                </button>
+                                                <button class="cancelCourse btn btn-danger"
+                                                        course_code="{{ course.course_code }}"
+                                                        url="{% url 'cancel-course' %}">
+                                                    <i class="fa fa-times"></i> Kursu İptal Et / Bitir
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
+                                        <button class="closeRegistration btn btn-warning"
+                                                url="{% url 'close-registration' %}"
+                                                regex="{{ course.registering_extension }}">
+                                            <i class="fa fa-exclamation-triangle"></i> Kayıtları Kapat
+                                        </button>
+                                    </td>
+                                    </form>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="ajaxProgress">
+                    <img src="{% static 'img/ajax-loader.gif' %}" class="loader" style="width: 50px; height: 50px;">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
