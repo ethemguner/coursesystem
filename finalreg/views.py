@@ -11,7 +11,7 @@ import datetime
 from .forms import NoticeForm
 import xlwt
 from users.models import Profile
-
+from prereg.models import PreRegistration
 
 def confirm_finalreg(request):
     if not request.user.is_staff:
@@ -70,7 +70,9 @@ def cancel_finalreg(request):
     user = get_object_or_404(User, username=username)
     payment = get_object_or_404(Payment, user=user)
     course = get_object_or_404(Course, registering_extension=course_code)
+    prereg = get_object_or_404(PreRegistration, user=user)
 
+    prereg.delete()
     payment.delete()
 
     subject = "Ege UZEM | Kesin kaydınız için yaptığınız ödeme reddedilmiştir."

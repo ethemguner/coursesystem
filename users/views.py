@@ -17,7 +17,7 @@ from django.db.models import Q
 from django.http import JsonResponse
 from DateHolder.models import DateHolder
 import datetime
-from Certification_Request.models import Certificate
+import re
 
 def user_register(request):
     if not request.user.is_active:
@@ -65,8 +65,31 @@ def user_register(request):
         return HttpResponseRedirect(reverse('panel'))
     return render(request, 'users/register.html', context={'form': form})
 
-
 def user_login(request):
+    form = LoginForm(request.POST or None)
+    MOBILE_AGENT_RE = re.compile(r".*(iphone|mobile|androidtouch)", re.IGNORECASE)
+    if MOBILE_AGENT_RE.match(request.META['HTTP_USER_AGENT']):
+        response = user_login_mobile(request)
+        return response
+    else:
+        if not request.user.is_active:
+            if form.is_valid():
+                username = form.cleaned_data.get('username')
+                password = form.cleaned_data.get('password')
+                user = authenticate(username=username, password=password)
+                if user:
+                    if user.is_active:
+                        login(request, user)
+                        if request.user.is_staff:
+                            return HttpResponseRedirect(reverse('panel'))
+                    loginMsg = "{}, hoşgeldiniz.".format(request.user.get_full_name())
+                    messages.success(request, loginMsg, extra_tags='success')
+                    return HttpResponseRedirect(reverse('user-panel'))
+        else:
+            return HttpResponseRedirect(reverse('user-panel'))
+    return render(request, 'users/login.html', context={'form': form})
+
+def user_login_mobile(request):
     if not request.user.is_active:
         form = LoginForm(request.POST or None)
         if form.is_valid():
@@ -83,8 +106,7 @@ def user_login(request):
                 return HttpResponseRedirect(reverse('user-panel'))
     else:
         return HttpResponseRedirect(reverse('user-panel'))
-
-    return render(request, 'users/login.html', context={'form': form})
+    return render(request, 'users/mobile_login.html', context={'form': form})
 
 def user_logout(request):
     logout(request)
@@ -197,7 +219,45 @@ def password_change(request):
 def forgot_password(request):
     global email
     form = ForgotPasswordForm(data=request.POST or None)
+    MOBILE_AGENT_RE = re.compile(r".*(iphone|mobile|androidtouch)", re.IGNORECASE)
+    if MOBILE_AGENT_RE.match(request.META['HTTP_USER_AGENT']):
+        response = mobile_forgotpassword(request)
+        return response
+    else:
+        if form.is_valid():
+            nationalid = form.cleaned_data.get('nationalid', '')
+            code = ''.join(random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=6))
+            users = User.objects.all().values_list('profile__nationalid', flat=True)
+            for user_nationalid in users:
+                if str(nationalid) == str(user_nationalid):
+                    profile = Profile.objects.get(nationalid=nationalid)
+                    email = profile.user.email
+                    profile.user.set_password(code)
+                    profile.user.save()
 
+            subject = "EGE Uzem | Şifre yenileme talebi alındı."
+            from_mail = settings.EMAIL_HOST_USER
+            message = ""
+            html_msg = """
+                <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
+                Şifre güncelleme talebinde bulunuldu. Aşağıdaki kod ile hesabınıza giriş yapabilirsiniz.
+                </p>
+                            
+                <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
+                <b>KOD: {}</b>
+                </p>
+                <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
+                <u>HESABINIZA GİRİŞ YAPTIKTAN SONRA "PROFİLİM" VE ARDINDAN "ŞİFRE DEĞİŞTİR" KISMINA TIKLAYIP
+                ŞİFRENİZİ DEĞİŞTİRMEYİ UNUTMAYINIZ.</u><p/>
+                
+            """.format(code)
+            send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
+            messages.success(request, 'Şifre yenilendi. E-mail adresinizi kontrol ediniz.')
+            return HttpResponseRedirect(reverse('forgot-password'))
+    return render(request, 'users/forgot_password.html', context={'form':form})
+
+def mobile_forgotpassword(request):
+    form = ForgotPasswordForm(data=request.POST or None)
     if form.is_valid():
         nationalid = form.cleaned_data.get('nationalid', '')
         code = ''.join(random.choices(string.ascii_lowercase + string.ascii_uppercase + string.digits, k=6))
@@ -216,19 +276,19 @@ def forgot_password(request):
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
             Şifre güncelleme talebinde bulunuldu. Aşağıdaki kod ile hesabınıza giriş yapabilirsiniz.
             </p>
-                        
+
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
             <b>KOD: {}</b>
             </p>
             <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
             <u>HESABINIZA GİRİŞ YAPTIKTAN SONRA "PROFİLİM" VE ARDINDAN "ŞİFRE DEĞİŞTİR" KISMINA TIKLAYIP
             ŞİFRENİZİ DEĞİŞTİRMEYİ UNUTMAYINIZ.</u><p/>
-            
+
         """.format(code)
         send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
         messages.success(request, 'Şifre yenilendi. E-mail adresinizi kontrol ediniz.')
         return HttpResponseRedirect(reverse('forgot-password'))
-    return render(request, 'users/forgot_password.html', context={'form':form})
+    return render(request, 'users/mobile_forgotpassword.html', context={'form': form})
 
 def confirm_delete_images(request):
     if not request.is_ajax():

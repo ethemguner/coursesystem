@@ -155,10 +155,10 @@ def send_certificationrequest(request, pk):
                     'Kurs talebiniz alınmıştır. Sertifikanız yüklendiğinde e-mailinize indirme linki gönderilecektir.')
         else:
             messages.success(request, 'Bitmeyen bir kurs için sertifika talebinde bulunamazsınız.', extra_tags="danger")
-        data = {
-            'date' : course.finish_at,
-            'who' : request.user.get_full_name(),
-            'course': course.name,
-        }
 
     return HttpResponseRedirect(reverse('user-panel'))
+
+def course_user_list(request, code):
+    course = get_object_or_404(Course, course_code=code)
+    users = course.profile_set.all()
+    return render(request, 'course/course-user-list.html', context={'users':users})

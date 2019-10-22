@@ -18,6 +18,9 @@
 
 {% endblock %}
 
+{% if request.user.is_staff %}
+{% else %}
 {% include 'footer.html' %}
+{% endif %}
 </body>
 </html>

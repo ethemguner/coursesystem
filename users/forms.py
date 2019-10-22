@@ -110,8 +110,9 @@ class LoginForm(forms.Form):
 class UpdateForm(forms.ModelForm):
     image = forms.ImageField(required=False, label="Kurum bağlantınıza ilişkin belge:",
                              help_text="""Belgenizin güncel kalması amacı 
-                             ile her yeni yılda tüm kullanıcılarımızın belgeleri silinir. 
-                             Bu işlem gerçekleştiğinde bilgilendirileceksiniz.""")
+                             ile belirli aralıklarla belge kontrolü yapmaktayız. Kontrol
+                             yapıldığında belgenizin yüklenme süresi 1 yılı aştıysa güncellemeniz
+                             için size bilgi gönderilecektir.""")
     title = forms.ChoiceField(required=True, choices=Profile.TITLE, label="Kurum bağlantınız:")
     phone = forms.CharField(widget=forms.TextInput, required=True, label="Telefon numaranız:")
     other_phone = forms.CharField(widget=forms.TextInput, required=False, label="Diğer telefon numaranız:")

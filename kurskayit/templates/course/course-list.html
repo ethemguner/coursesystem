@@ -17,6 +17,7 @@
                         <th scope="col">BAŞLANGIÇ</th>
                         <th scope="col">BİTİŞ</th>
                         <th scope="col">İŞLEM</th>
+                        <th scope="col">KULLANICILAR</th>
                         <th scope="col">DUYURU</th>
                     </tr>
                     </thead>
@@ -32,6 +33,14 @@
                                     <i class="fa fa-pencil-square-o"></i> <a
                                         href="{% url 'course-edit' course.course_code %}"
                                         style="color: white">DÜZENLE</a>
+                                </button>
+                            </td>
+                            <td>
+
+                                <button type="button" class="btn btn-primary btn-sm">
+                                    <i class="fa fa-search"></i> <a
+                                        href="{% url 'course-user-list' course.course_code %}"
+                                        style="color: white">GÖRÜNTÜLE</a>
                                 </button>
                             </td>
                             <td>
