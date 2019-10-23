@@ -10,6 +10,9 @@ import datetime
 from dateutil import relativedelta
 from django.conf import settings
 from django.core.mail import send_mail
+from users.forms import EditClassIDandPassForm
+from users.models import Profile
+from django.contrib.auth.models import User
 
 def course_adding(request):
     if request.user.is_staff:
@@ -59,7 +62,6 @@ def course_edit(request, code):
             return HttpResponseRedirect(reverse('panel'))
     else:
         return HttpResponseRedirect(reverse('user-panel'))
-
     return render(request, 'course/course-edit.html', context={'form':form})
 
 def course_list(request):
@@ -113,7 +115,6 @@ def course_discounts(request):
             return HttpResponseRedirect(reverse('course-discount'))
     else:
         return HttpResponseRedirect(reverse('user-panel'))
-
     return render(request, 'course/discount-edit.html', context={'form':form, 'discount':discount})
 
 def send_certificationrequest(request, pk):
@@ -162,3 +163,19 @@ def course_user_list(request, code):
     course = get_object_or_404(Course, course_code=code)
     users = course.profile_set.all()
     return render(request, 'course/course-user-list.html', context={'users':users})
+
+def user_class_edit(request, username):
+    form = EditClassIDandPassForm(data=request.POST or None)
+    user = get_object_or_404(User, username=username)
+    profile = get_object_or_404(Profile, user=user)
+
+    if form.is_valid():
+        class_id = form.cleaned_data.get('class_id', '')
+        class_pass = form.cleaned_data.get('class_pass', '')
+
+        profile.class_id = class_id
+        profile.class_pass = class_pass
+        profile.save()
+        messages.success(request, 'Kullanıcı sanal sınıf giriş ID ve şifresi kaydedildi.', extra_tags='success')
+        return HttpResponseRedirect(reverse('user-class-edit', kwargs={'username':username}))
+    return render(request, 'course/edit-id-pass.html', context={'form':form, 'username':username})

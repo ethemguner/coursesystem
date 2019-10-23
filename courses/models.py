@@ -28,6 +28,7 @@ class Course(models.Model):
     registering_extension = models.CharField(max_length=25, null=True, blank=True, editable=True)
     is_registerable = models.BooleanField(default=False, verbose_name="Kesin kaydı aç.")
     category = models.CharField(max_length=45, null=True, blank=False, verbose_name="Kurs Kategori:", choices=CATEGORIES)
+    class_link = models.CharField(max_length=150, null=True, blank=True, verbose_name="Sanal sınıf linki:")
 
     class Meta:
         verbose_name_plural = "Kurslar"

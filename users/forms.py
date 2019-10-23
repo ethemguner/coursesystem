@@ -188,3 +188,25 @@ class ForgotPasswordForm(forms.Form):
             int(nationalid)
         except TypeError:
             self.add_error('nationalid', 'Geçersiz T.C Kimlik numarası.')
+
+class ClassIDandPassForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['class_id', 'class_pass']
+
+    def __init__(self, *args, **kwargs):
+        super(ClassIDandPassForm, self).__init__(*args, **kwargs)
+        self.fields['class_id'].disabled = True
+        self.fields['class_pass'].disabled = True
+        for field in self.fields:
+            self.fields[field].widget.attrs = {'class': 'form-control'}
+
+class EditClassIDandPassForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['class_id', 'class_pass']
+
+    def __init__(self, *args, **kwargs):
+        super(EditClassIDandPassForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs = {'class': 'form-control'}

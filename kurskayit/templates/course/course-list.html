@@ -6,7 +6,7 @@
     <div class="container-fluid">
         {% include 'admin/admin-navbar.html' %}
         <div class="row" style="margin-top: 75px;">
-            <div class="col-lg-6 offset-3">
+            <div class="col-lg-8 offset-2">
                 <h1 class="text-center course-prereg-header" style="color: darkblue">Kurslar ({{ courses.count }})</h1>
                 <hr>
                 <table class="table">
@@ -32,7 +32,7 @@
                                 <button type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-pencil-square-o"></i> <a
                                         href="{% url 'course-edit' course.course_code %}"
-                                        style="color: white">DÜZENLE</a>
+                                        style="color: white">KURSU DÜZENLE</a>
                                 </button>
                             </td>
                             <td>
@@ -40,7 +40,7 @@
                                 <button type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-search"></i> <a
                                         href="{% url 'course-user-list' course.course_code %}"
-                                        style="color: white">GÖRÜNTÜLE</a>
+                                        style="color: white">GÖRÜNTÜLE & DÜZENLE</a>
                                 </button>
                             </td>
                             <td>
@@ -63,6 +63,5 @@
             </div>
         </div>
     </div>
-
 
 {% endblock %}

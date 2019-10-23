@@ -4,7 +4,7 @@ from .models import Course, CourseDiscount
 class CourseAddingForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['name', 'start_at', 'finish_at', 'price', 'category','status', 'content']
+        fields = ['name', 'start_at', 'finish_at', 'price', 'category','status', 'content', 'class_link']
         labels = {
             'name':'Kurs İsmi:',
             'start_at':'Başlangıç tarihi:',
@@ -12,7 +12,8 @@ class CourseAddingForm(forms.ModelForm):
             'price':'Ücreti:',
             'category':'Kurs kategori:',
             'status':'Kurs Durumu:',
-            'content':'Kurs İçeriği:'
+            'content':'Kurs İçeriği:',
+            'class_link':'Sanal sınıf linki:',
         }
 
     def __init__(self, *args, **kwargs):

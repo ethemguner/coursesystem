@@ -30,6 +30,8 @@ class Profile(models.Model):
     image = models.ImageField(upload_to=upload_to, verbose_name='Belge:', blank=True)
     created_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     course = models.ManyToManyField(Course, blank=True)
+    class_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="ID:")
+    class_pass = models.CharField(max_length=50, null=True, blank=True, verbose_name="Şifre:")
 
     class Meta:
         verbose_name_plural = "Profiller"
