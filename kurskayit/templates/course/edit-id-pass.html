@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block TITLE %}Düzenleme{% endblock %}
+
+{% block BODY %}
+    <div class="container-fluid">
+        {% include 'admin/admin-navbar.html' %}
+        <div class="row">
+            <div class="col-lg-6 offset-3">
+                <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Kullanıcı Sanal
+                    Sınıf ID & Şifre Düzenleme</h1>
+                <form method="post" action="{% url 'user-class-edit' username %}">
+                    {% csrf_token %}
+                    <!-- FORM FIELDS-->
+                    {% for field in form %}
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-8 offset-2">
+                                    <label class="control-label" style="color: #0f0f0f" for="{{ field.id_for_label }}">
+                                        <span style="font-family: 'Calibri Light'; color: darkblue; font-size: 18px;">{{ field.label }}</span>
+                                    </label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        {% for error in field.errors %}
+                                            <span style="color: red; font-family: 'Calibri Light'; font-size: 17px;"><b>{{ error }}</b></span>
+                                        {% endfor %}
+                                    {% else %}
+                                        {% if field.help_text %}
+                                            <span style="font-family: 'Calibri Light'; color: gray;">{{ field.help_text }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="row">
+                        <div class="col-md-8 offset-2">
+                            <input type="submit" class="btn btn-primary float-lg-right" value="ONAYLA"
+                                   style="margin-top: 10px">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
