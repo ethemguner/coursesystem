@@ -15,7 +15,7 @@ def course_given_request(request):
         max = form.cleaned_data.get('limit_max')
         min = form.cleaned_data.get('limit_min')
         user = request.user
-        messages.success(request, 'Kurs verme talebiniz alınmıştır. Uygun görülürse sizinle iletişime geçilecektir.',
+        messages.success(request, 'We have taken your request. We will contact with you.',
                          extra_tags='success')
         CourseGiven.objects.create(user=user, request_title=title, request_content=content, limit_max=max, limit_min=min).save()
         return HttpResponseRedirect(reverse('user-panel'))
@@ -31,7 +31,7 @@ def course_taken_request(request):
         title = form.cleaned_data.get('request_title')
         content = form.cleaned_data.get('request_content')
         user = request.user
-        messages.success(request, 'Kurs alma talebiniz alınmıştır. Kurs açılırsa bilgi gönderilecektir.',
+        messages.success(request, 'We have taken your request. We will contact with you.',
                          extra_tags='success')
         CourseTaken.objects.create(user=user, request_title=title, request_content=content).save()
         return HttpResponseRedirect(reverse('user-panel'))

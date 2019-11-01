@@ -7,18 +7,18 @@
         {% include 'admin/admin-navbar.html' %}
         <div class="row" style="margin-top: 75px;">
             <div class="col-lg-8 offset-2">
-                <h1 class="text-center course-prereg-header" style="color: darkblue">Kurslar ({{ courses.count }})</h1>
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Courses ({{ courses.count }})</h1>
                 <hr>
                 <table class="table">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">KURS</th>
-                        <th scope="col">BAŞLANGIÇ</th>
-                        <th scope="col">BİTİŞ</th>
-                        <th scope="col">İŞLEM</th>
-                        <th scope="col">KULLANICILAR</th>
-                        <th scope="col">DUYURU</th>
+                        <th scope="col">COURSE</th>
+                        <th scope="col">START</th>
+                        <th scope="col">FINISH</th>
+                        <th scope="col">ACTION</th>
+                        <th scope="col">USERS</th>
+                        <th scope="col">ANNOUNCEMENT</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,7 +32,7 @@
                                 <button type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-pencil-square-o"></i> <a
                                         href="{% url 'course-edit' course.course_code %}"
-                                        style="color: white">KURSU DÜZENLE</a>
+                                        style="color: white">EDIT COURSE</a>
                                 </button>
                             </td>
                             <td>
@@ -40,23 +40,23 @@
                                 <button type="button" class="btn btn-primary btn-sm">
                                     <i class="fa fa-search"></i> <a
                                         href="{% url 'course-user-list' course.course_code %}"
-                                        style="color: white">GÖRÜNTÜLE & DÜZENLE</a>
+                                        style="color: white">SHOW</a>
                                 </button>
                             </td>
                             <td>
                                 <button type="button" class="btn btn-warning btn-sm">
                                     <i class="fa fa-bullhorn"></i> <a
                                         href="{% url 'send-notice' course.course_code %}"
-                                        style="color: black">DUYURU YAYINLA</a>
+                                        style="color: black">PUBLISH ANNOUNCEMENT</a>
                                 </button>
                             </td>
                         </tr>
                     {% empty %}
                         <th scope="row">1</th>
-                        <td>Bilgi yok</td>
-                        <td>Bilgi yok</td>
-                        <td>Bilgi yok</td>
-                        <td>Bilgi yok</td>
+                        <td>NO INFO.</td>
+                        <td>NO INFO.</td>
+                        <td>NO INFO.</td>
+                        <td>NO INFO.</td>
                     {% endfor %}
                     </tbody>
                 </table>

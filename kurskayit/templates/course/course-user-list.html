@@ -1,13 +1,48 @@
 {% extends 'base.html' %}
 {% block TITLE %}Kursiyer Listesi{% endblock %}
 
+{% block HEAD %}
+
+    <script type="text/javascript" rel="script">
+        $(document).ready(function () {
+            $(".showInformation").click(function () {
+                var $this = $(this);
+                var $name = $this.attr('name');
+                var $mail = $this.attr('mail');
+                var $phone = $this.attr('phone');
+                var $other_phone = $this.attr('other_phone');
+                var $url = $this.attr('url');
+                var data = {
+                    name: $name, mail: $mail, phone: $phone, other_phone: $other_phone
+                };
+
+                $.ajax({
+                    url: $url,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        $(".ad").html(data.name);
+                        $(".phone_number").html(data.phone);
+                        $(".other_phone").html(data.other_phone);
+                        $(".mail").html(data.mail);
+                        $(".modal").modal('show')
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock %}
+
 {% block BODY %}
     <div class="container-fluid">
         {% include 'admin/admin-navbar.html' %}
         {% include 'message.html' %}
+        {% include 'modal.html' %}
         <div class="row" style="margin-top: 75px;">
             <div class="col-lg-6 offset-3">
-                <h1 class="text-center course-prereg-header" style="color: darkblue">Kursiyerler
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Users
                     ({{ users.count }})</h1>
                 <hr>
                 <table class="table">
@@ -16,12 +51,12 @@
                         <th scope="col">#</th>
                         <th scope="col">
                             <div class="text-center">
-                                KURSİYER
+                                USER
                             </div>
                         </th>
                         <th scope="col">
                             <div class="text-center">
-                                İŞLEM
+                                CONTACT
                             </div>
                         </th>
                     </tr>
@@ -34,21 +69,25 @@
                                 <div class="text-center">
                                     {{ profile.user.get_full_name }}
                                 </div>
-                                </td>
+                            </td>
                             <td>
                                 <div class="text-center">
-                                    <button type="button" class="btn btn-secondary btn-sm">
-                                        <i class="fa fa-pencil-square-o"></i> <a
-                                            href="{% url 'user-class-edit' profile.user.username %}"
-                                            style="color: white">KURS BİLGİLERİNİ DÜZENLE</a>
+                                    <button type="button" class="showInformation btn btn-outline-primary btn-sm"
+                                    url="{% url 'user-contact-info' %}"
+                                            name="{{ profile.user.get_full_name}}"
+                                            phone="{{ profile.user.profile.phone }}"
+                                            other_phone="{{ profile.user.profile.other_phone }}"
+                                            mail="{{ profile.user.email }}">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                            Browse Contact Information
                                     </button>
                                 </div>
                             </td>
                         </tr>
                     {% empty %}
                         <th scope="row">1</th>
-                        <td>Bilgi yok</td>
-                        <td>Bilgi yok</td>
+                        <td>NO INFO.</td>
+                        <td>NO INFO.</td>
                     {% endfor %}
                     </tbody>
                 </table>

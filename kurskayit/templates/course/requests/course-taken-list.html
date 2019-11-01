@@ -6,7 +6,7 @@
     <script type="text/javascript" rel="script">
         $(document).ready(function () {
             $(".deleteRequest").click(function () {
-                if (confirm('Bu talebi silmek istediğinizden emin misiniz?')) {
+                if (confirm('This request will be deleted, are you sure?')) {
                     var $this = $(this);
                     var $reqid = $this.attr('reqid');
                     var $url = $this.attr('url');
@@ -34,7 +34,7 @@
     <div class="container-fluid">
     {% include 'admin/admin-navbar.html' %}
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6  offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3" style="margin-top: 75px;">
-            <h1 class="text-center course-prereg-header" style="color: darkblue">Kurs Alma Talebinde Bulunanlar</h1>
+            <h1 class="text-center course-prereg-header" style="color: darkblue">Requests</h1>
             <hr>
         </div>
         <div class="row justify-content-center h-100">
@@ -48,18 +48,18 @@
                             <div class="card-body">
                                 <h5 class="card-title">{{ c_request }}</h5>
                                 <p class="card-text">{{ c_request.request_content }}</p>
-                                <p><b>Telefon numarası: </b>+90{{ c_request.user.profile.phone }}</p>
-                                <p><b>Diğer telefon numarası: </b>+90{{ c_request.user.profile.other_phone }}</p>
-                                <p><b>E-mail adresi: </b> {{ c_request.user.email }}</p>
+                                <p><b>Phone number: </b>+90{{ c_request.user.profile.phone }}</p>
+                                <p><b>Other phone number: </b>+90{{ c_request.user.profile.other_phone }}</p>
+                                <p><b>E-mail adress: </b> {{ c_request.user.email }}</p>
                                 <a href="#" class="deleteRequest btn btn-danger float-lg-right"
                                    reqid="{{ c_request.id }}"
                                    url="{% url 'delete-taken-request' %}">
                                     <i class="fa fa-trash-o"></i>
-                                    Talebi Sil</a>
+                                    Delete Request</a>
                             </div>
                         </div>
                     {% empty %}
-                        <h3 class="text-danger">Herhangi bir talep bulunamadı.</h3>
+                        <h3 class="text-danger">There is no any request has taken.</h3>
                     {% endfor %}
                 </div>
             </div>

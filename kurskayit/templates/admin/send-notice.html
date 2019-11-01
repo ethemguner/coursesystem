@@ -6,9 +6,9 @@
     {% include 'admin/admin-navbar.html' %}
     {% include 'message.html' %}
     <div class="col-lg-6 offset-3">
-        <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Duyuru Yayınla</h1>
+        <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Publish an Announcement</h1>
         <hr>
-        <p class="lead">Bu kurs için {{ profiles|length }} adet kullanıcıya e-mail gönderilecektir.</p>
+        <p class="lead">For this course, {{ profiles|length }} e-mail will send.</p>
     </div>
     <div class="container-fluid">
         <div class="row justify-content-center h-100">
@@ -40,7 +40,7 @@
                     {% endfor %}
                     <div class="row">
                         <div class="col-sm-6 col-md-6 col-lg-6">
-                            <input type="submit" class="btn btn-success float-lg-right" value="Yayınla"
+                            <input type="submit" class="btn btn-success float-lg-right" value="Publish"
                                    style="margin-top: 10px">
                         </div>
                     </div>

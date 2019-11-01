@@ -2,12 +2,12 @@ from django import forms
 from .models import Payment
 
 class PaymentForm(forms.ModelForm):
-    image = forms.ImageField(required=False, label="DEKONT:")
+    image = forms.ImageField(required=False, label="Receipt:")
     class Meta:
         model = Payment
         fields = ['account_owner', 'image']
         labels = {
-            'account_owner':'Ödemeyi yapmış olan kişi:'
+            'account_owner':'Who made the transaction:'
         }
 
     def __init__(self, *args, **kwargs):

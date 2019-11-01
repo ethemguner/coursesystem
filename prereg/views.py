@@ -45,28 +45,25 @@ def send_payment_pages(request):
         course.status = '3'
         course.save()
 
-        subject = "Ege UZEM | Başvurduğunuz kurs için kesin kayıtlar açılmıştır."
+        subject = "Course | Final registrations have started."
         from_mail = settings.EMAIL_HOST_USER
         message = ""
         html_msg = """
-        <h2 style="font-family: Trebuchet MS;">TALIMATLAR</h2>
-        <p style="font-family: Calibri; font-size: 18px">Merhaba,</p>
+        <h2 style="font-family: Trebuchet MS;">INSTRUCTIONS</h2>
+        <p style="font-family: Calibri; font-size: 18px">Hello,</p>
         <p style="font-family: Calibri; font-size: 18px">
-        Ödeme yapmak için aşağıdaki linke tıklayınız. Açılan sayfada ödeme yapmanız gereken hesabın gerekli
-        bilgileri mevcuttur. Bu bilgiler doğrultusunda ödemeyi yapınız. Ödemeyi yapmadan önce lütfen bilgilerinizi
-        "Bilgilerim" kısmından kontrol ediniz. Gerekli bilgileri/belgeleri doğru bir şekilde girdiğinizden
-        emin olunuz.
+        To pay, click link below. On the opening page, you'll see bank account information.
+        According to these information make the payment. Before paying, check your information
+        from "My Profile". Be sure you've the document and other information.
         </p>
 
-        <h2 style="font-family: Trebuchet MS;">ONAY SÜRESİ</h2>
+        <h2 style="font-family: Trebuchet MS;">Verification Period</h2>
         <p style="font-family: Calibri; font-size: 18px">
-        Bilgileriniz tarafımıza ödemeyi yaptıktan sonra anında ulaşacaktır. Dekont, belge ve bilgilerinizde herhangi
-        bir uyuşmazlık veya eksik yok ise kesin kaydınız 1-3 iş günü içerisinde onaylanır ve onay e-maili tarafınıza
-        gönderilir.
+        When you sent the payment, we'll check it and If everything is fine, your certain registration will be done.
         </p>
 
         <a href ="http://127.0.0.1:8000/payment/send-payment/{}" style="font-family: Bahnschrift; font-size: 20px;">
-        Ödeme sayfasına gitmek için tıklayınız.
+        Click to go payment page.
         </a>
         """.format(ext)
 
@@ -75,7 +72,7 @@ def send_payment_pages(request):
             send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=False)
             counter += 1
             if counter == len(mails_query):
-                messages.success(request, '{} adet e-mail gönderilmiştir.'.format(len(mails_query)),
+                messages.success(request, '{} e-mail sent for final registration.'.format(len(mails_query)),
                                  extra_tags="success")
             else:
                 pass
@@ -96,13 +93,13 @@ def cancel_course(request):
         course.status = '4'
         course.save()
 
-        subject = "Ege UZEM | Başvurduğunuz kurs iptal edilmiştir."
+        subject = "Course | Course has been declined."
         from_mail = settings.EMAIL_HOST_USER
         message = ""
         html_msg = """
-        <p style="font-family: Calibri Light;">Merhaba,</p>
-        <p style="font-family: Calibri Light;">Ön başvuruda bulunduğunuz kurs yeterli katılım sağlanamadığından iptal edilmiştir.</p>
-        <p style="font-family: Calibri Light;">Ekstra bir işlem yapmanıza gerek yoktur.</p>
+        <p style="font-family: Calibri Light;">Hello,</p>
+        <p style="font-family: Calibri Light;">Not enough participation for course that you applied.</p>
+        <p style="font-family: Calibri Light;">Check the other courses.</p>
         """
         counter = 0
         for mail in mails_query:
@@ -112,7 +109,7 @@ def cancel_course(request):
             prereg = PreRegistration.objects.get(user=user)
             prereg.delete()
             if counter == len(mails_query):
-                messages.success(request, '{} kişiye kurs iptal bilgisi gönderilmiştir.'.format(len(mails_query)),
+                messages.success(request, '{} e-mail sent successfully.'.format(len(mails_query)),
                                  extra_tags="danger")
             else:
                 pass

@@ -4,13 +4,13 @@ register = template.Library()
 @register.filter
 def get_status(i, course):
     if course == "1":
-        course = "Devam ediyor."
+        course = "Continuing."
     elif course == "2":
-        course = "Ön kayıtlar açıldı."
+        course = "Pre-registration open."
     elif course == "3":
-        course = 'Kesin kayıtlar açık.'
+        course = 'Final registration open.'
     elif course == "4":
-        course = "Bitti."
+        course = "Finished."
     else:
         course = None
     return course

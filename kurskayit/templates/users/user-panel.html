@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'base.css' %}">
     <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <title>Kullanıcı Paneli | {{ request.user.username }}</title>
+    <title>User Panel | {{ request.user.username }}</title>
 </head>
 <body>
 {% include 'nav-bar.html' %}
@@ -18,14 +18,14 @@
     {% include 'message.html' %}
     <div class="row justify-content-center h-100">
         <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h1 style="font-family: 'Trebuchet MS'">Kullanıcı Paneli</h1>
+            <h1 style="font-family: 'Trebuchet MS'">User Panel</h1>
             <hr>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                <h3 class="text-center" style="font-family: 'Trebuchet MS';">Tüm Kurslar</h3>
+                <h3 class="text-center" style="font-family: 'Trebuchet MS';">All Courses</h3>
                 <hr>
             </div>
             <div style="height: 450px; overflow-y: scroll; overflow: auto">
@@ -33,12 +33,12 @@
                     <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">KURS</th>
-                        <th scope="col">BAŞLANGIÇ</th>
-                        <th scope="col">BİTİŞ</th>
-                        <th scope="col">DURUM</th>
-                        <th scope="col">İŞLEM</th>
-                        <th scope="col">KURS DETAY</th>
+                        <th scope="col">COURSE</th>
+                        <th scope="col">START</th>
+                        <th scope="col">FINISH</th>
+                        <th scope="col">STATUS</th>
+                        <th scope="col">ACTION</th>
+                        <th scope="col">DETAIL</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,28 +61,28 @@
                         {% if course.status == "2" or course.status == "3" %}
                             <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-file-text-o"></i>
                                 {% if course.is_registerable == False %}
-                                    <a href="{% url 'send-application' course.course_code %}" style="color: white">BAŞVUR</a>
+                                    <a href="{% url 'send-application' course.course_code %}" style="color: white">APPLY</a>
                                 {% else %}
                                     <a href="{% url 'send-payment' course.registering_extension %}"
-                                       style="color: white">KAYDOL</a>
+                                       style="color: white">REGISTER</a>
                                 {% endif %}
                             </button>
                         {% else %}
-                            <u>Başvuru yapılamaz.</u>
+                            <u>Cannot apply.</u>
                         {% endif %}
                     </td>
-                    <td><a href="{% url 'course-detail' course.course_code %}" style="color: black">İçeriğini
-                        görüntüle.</a></td>
+                    <td><a href="{% url 'course-detail' course.course_code %}" style="color: black">Show
+                        content.</a></td>
                     </tr>
                     {% empty %}
                         <tr class="text-danger" style="font-family: 'Calibri'">
                             <th scope="col">1</th>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -90,7 +90,7 @@
                 <p>
                     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button"
                        aria-expanded="false" aria-controls="collapseExample">
-                        <i class="fa fa-tasks"></i> Kategoriye göre filtrele
+                        <i class="fa fa-tasks"></i> Filter
                     </a>
                 </p>
                 <div class="collapse" id="collapseExample">
@@ -121,7 +121,7 @@
                             {% endfor %}
                             <div class="row">
                                 <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
-                                    <input type="submit" class="btn btn-success float-lg-right" value="Filtrele"
+                                    <input type="submit" class="btn btn-success float-lg-right" value="Confirm"
                                            style="margin-top: 10px">
                                 </div>
                             </div>
@@ -131,17 +131,17 @@
             </div>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <h3 class="text-center" style="font-family: 'Trebuchet MS'">Kurslarım</h3>
+            <h3 class="text-center" style="font-family: 'Trebuchet MS'">My Courses</h3>
             <hr>
             <div style="height: 450px; overflow-y: scroll; overflow: auto">
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">KURS</th>
-                        <th scope="col">BAŞLANGIÇ</th>
-                        <th scope="col">BİTİŞ</th>
-                        <th scope="col">SERTİFİKA</th>
+                        <th scope="col">COURSES</th>
+                        <th scope="col">START</th>
+                        <th scope="col">FINISH</th>
+                        <th scope="col">CERTIFICATE</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -152,17 +152,20 @@
                             <td><b>{{ user_course.start_at }}</b></td>
                             <td><b>{{ user_course.finish_at }}</b></td>
                             {% if user_course.certificate_set.get.certificate %}
-                                <td><b><a href="{{ user_course.certificate_set.get.certificate.url }}">İNDİR & GÖRÜNTÜLE</a></b></td>
+                                <td><b><a href="{{ user_course.certificate_set.get.certificate.url }}">DOWNLOAD &
+                                    BROWSE</a></b></td>
                             {% else %}
-                                <td><b><a href="{% url 'send-certificationrequest' user_course.id %}">SERTİFİKA TALEP ET</a></b></td>
+                                <td><b><a href="{% url 'send-certificationrequest' user_course.id %}">REQUEST
+                                    A CERTIFICATE</a></b></td>
                             {% endif %}
                         </tr>
                     {% empty %}
                         <tr class="text-danger" style="font-family: 'Calibri'">
                             <th scope="col">1</th>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
-                            <td>Bilgi yok.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
+                            <td>NO INFO.</td>
                         </tr>
                     {% endfor %}
                     </tbody>

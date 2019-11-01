@@ -46,24 +46,21 @@ def image_control(request):
                 email = user.email
 
                 #Sending e-mail to user.
-                subject = "EGE Uzem | Belgenizin geçerlilik süresi doldu."
+                subject = "Course | Your document's period of validity has finished."
                 from_mail = settings.EMAIL_HOST_USER
                 message = ""
                 html_msg = """
                     <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                    Merhaba {},
+                    Hello {},
                     </p>
 
                     <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                    <b>Ege Üniversitesi UZEM Kurs sistemindeki kayıtlı hesabınızda 
-                    yüklemiş olduğunuz belgenin geçerlilik süresi dolmuştur.
+                    <b>Your registrated account's document on our course system is
+                    no longer available.
                     </b>
                     </p>
                     <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
-                    <u>"Profilim" sekmesinden ilgili kurum bağlantınıza göre gerekli belgeyi güncellemeyi unutmayınız.</u><p/>
-                    <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                    Ege Üniversitesi UZEM Kurs Kayıt Sistemine giriş yapmak için 
-                    <a href="#">tıklayınız.</a></p>
+                    <u>Please update it from "My Profile" page.</u><p/>
 
                 """.format(user.get_full_name())
                 send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
@@ -72,9 +69,9 @@ def image_control(request):
             pass
 
     if len(deleted_images) == 0:
-        messages.success(request, 'Belge geçerlilik süresi dolmuş bir kullanıcı bulunamadı.',
+        messages.success(request, "There is no user whose document period of validity has finished.",
                              extra_tags="danger")
     else:
         messages.success(request,
-        '{} adet kullanıcının belgeleri silinmiş, e-maillerine bilgi gönderilmiştir.'.format(len(deleted_images)))
+        '{} users document deleted and sent e-mail.'.format(len(deleted_images)))
     return JsonResponse(data={'is_valid':True})

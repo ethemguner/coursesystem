@@ -35,7 +35,7 @@
             });
 
             $(".confirmPayment").click(function () {
-                if (confirm('Ödeme bildirimi onaylanacak, kesin kayıt gerçekleşecektir. Emin misiniz?')) {
+                if (confirm("User's course will be confirmed. Are you sure?")) {
                     var $this = $(this);
                     var $url = $this.attr('url');
                     var $payment_id = $this.attr('payment_id');
@@ -58,7 +58,7 @@
             });
 
             $(".cancelPayment").click(function () {
-                if (confirm('Ödeme bildirimi iptal edilecektir. Emin misiniz?')) {
+                if (confirm("User's payment will be declined or user's registration will be deleted. Are you sure?")) {
                     var $this = $(this);
                     var $url = $this.attr('url');
                     var $username = $this.attr('username');
@@ -79,27 +79,6 @@
                     });
                 }
             });
-
-            $(".deleteRegistration").click(function () {
-                if (confirm('Kayıt silinecektir. Emin misiniz?')) {
-                    var $this = $(this);
-                    var $url = $this.attr('url');
-                    var $finalreg_id = $this.attr('finalreg_id');
-
-
-                    var data = {finalreg_id: $finalreg_id};
-
-                    $.ajax({
-                        url: $url,
-                        type: 'GET',
-                        dataType: 'json',
-                        data: data,
-                        success: function (data) {
-                            location.reload()
-                        }
-                    });
-                }
-            });
         });
     </script>
 
@@ -112,7 +91,7 @@
         <div class="row justify-content-center h-100" style="height: 1080px; margin-top: 75px;">
             <!-- PAYMENTS -->
             <div class="col-lg-12">
-                <h1 class="text-center course-prereg-header" style="color: darkblue">Ödemeler ({{ amount }})</h1>
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Payments ({{ amount }})</h1>
                 <hr>
                 <div class="col-lg-12">
                     <div style="height: 450px; overflow-y: scroll; overflow: auto">
@@ -123,35 +102,35 @@
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        BAŞVURUDA BULUNAN
+                                        APPLIER
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        T.C KİMLİK
+                                        ID NUMBER
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        STATÜSÜ
+                                        STATUS
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        KİMLİK/BELGE
+                                        DOCUMENT
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        BAŞVURULAN KURS
+                                        APPLIED COURSE
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        DEKONT
+                                        RECEIPT
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        BAŞVURU TARİHİ
+                                        APPLY DATE
                                     </th>
                                     <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                         class="text-center">
-                                        İLETİŞİM BİLGİLERİ
+                                        CONTACT INFO
                                     </th>
                                 </tr>
                                 </thead>
@@ -174,7 +153,7 @@
                                             {% if not payment.user.profile.image %}
                                             <p class="text-danger">Bilgi yok.</p>
                                             {% else %}
-                                            <a href="{{ payment.user.profile.image.url }}">GÖRÜNTÜLE</a>
+                                            <a href="{{ payment.user.profile.image.url }}">VIEW</a>
                                             {% endif %}
                                         </td>
                                         <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
@@ -182,7 +161,7 @@
                                         </td>
                                         <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
                                             <a href="{{ payment.image.url }}">
-                                                GÖRÜNTÜLE
+                                                VIEW
                                             </a>
                                         </td>
                                         <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
@@ -196,7 +175,7 @@
                                                         other_phone="{{ payment.user.profile.other_phone }}"
                                                         mail="{{ payment.user.email }}"
                                                         url="{% url 'detail' %}">
-                                                    <i class="fa fa-folder-open-o"></i> Görüntüle
+                                                    <i class="fa fa-folder-open-o"></i> SHOW
                                                 </button>
                                             </div>
                                         </td>
@@ -208,14 +187,14 @@
                                                             username="{{ payment.user.username }}"
                                                             course_code="{{ payment.course.registering_extension }}"
                                                             url="{% url 'confirmFinalReg' %}">
-                                                        <i class="fa fa-check"></i> Onayla
+                                                        <i class="fa fa-check"></i> Confirm
                                                     </button>
                                                     <button class="cancelPayment btn btn-danger"
                                                             payment_id="{{ payment.id }}"
                                                             username="{{ payment.user.username }}"
                                                             course_code="{{ payment.course.registering_extension }}"
                                                             url="{% url 'cancelFinalReg' %}">
-                                                        <i class="fa fa-times"></i> Sil
+                                                        <i class="fa fa-times"></i> Delete
                                                     </button>
                                                 </div>
                                             </div>
@@ -224,22 +203,22 @@
                                 {% empty %}
                                     <tr>
                                         <th scope="row">1</th>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                        <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
+                                        <td scope="row" class="text-danger text-center">NO INFO</td>
                                     </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                         <button class="btn btn-primary float-lg-right">
-                            <a href="{% url 'panel' %}" style="color: white"><i class="fa fa-refresh"></i> Yenile</a>
+                            <a href="{% url 'panel' %}" style="color: white"><i class="fa fa-refresh"></i> Refresh</a>
                         </button>
                     </div>
                 </div>

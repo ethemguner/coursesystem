@@ -9,15 +9,15 @@
         <div class="row">
             <div class="col-lg-6 offset-3">
                 <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">
-                    İndirim Düzenleme
+                    Edit Discounts
                 </h1>
                 <p class="lead text-center">
-                    Ege Üniversitesi öğrencisi / personeli / mezunu için <b style="color: red">%{{ discount.discount_1 }}</b> indirim uygulanmaktadır.
+                    For group 1 <b style="color: red">%{{ discount.discount_1 }}</b> discount is active.
                 </p>
                 <p class="lead text-center">
-                    Gazi / engelli / şehit yakını için <b style="color: red">%{{ discount.discount_2 }}</b> indirim uygulanmaktadır.
+                    For group 2 <b style="color: red">%{{ discount.discount_2 }}</b> discount is active.
                 </p>
-                <p class="lead text-center"><b>Banka Hesap Bilgileri:</b></p>
+                <p class="lead text-center"><b>Bank account info:</b></p>
                 <p class="text-center" style="font-family: 'Calibri Light'; font-size: 18px;">{{ discount.bank_info|linebreaksbr}}</p>
 
                 <form method="post" action="{% url 'course-discount' %}">
@@ -47,7 +47,7 @@
                     {% endfor %}
                     <div class="row">
                         <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
-                            <input type="submit" class="btn btn-success float-lg-right" value="Uygula"
+                            <input type="submit" class="btn btn-success float-lg-right" value="Apply"
                                    style="margin-top: 10px">
                         </div>
                     </div>

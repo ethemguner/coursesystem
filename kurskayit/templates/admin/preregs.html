@@ -8,7 +8,7 @@
 
         $(document).ready(function () {
             $(".sendPaymentPage").click(function () {
-                if (confirm('Ön başvuru yapanlara kesin kayıtların açıldığı hakkında e-mail gönderilecektir. Emin misiniz?')) {
+                if (confirm('Certain registrations will be opened and e-mails will send, are you sure?')) {
                     var $this = $(this);
                     var $course_code = $this.attr('course_code');
                     var $url = $this.attr('url');
@@ -29,7 +29,7 @@
             });
 
             $(".cancelCourse").click(function () {
-                if (confirm('Kursiyerlere kesin kayıtların açıldığı hakkında e-mail gönderilecektir. Emin misiniz?')) {
+                if (confirm("This course's status will be set as 'Finished' and certain registrations will be closed. Are you sure?")) {
                     var $this = $(this);
                     var $course_code = $this.attr('course_code');
                     var $url = $this.attr('url');
@@ -50,7 +50,7 @@
             })
 
             $(".closeRegistration").click(function () {
-                if (confirm('Kurs kayıtları kapanacaktır. Emin misiniz?')) {
+                if (confirm("This course's status will be set as 'Contiuning' and closed the registrations. Are you sure?")) {
                     var $this = $(this);
                     var $url = $this.attr('url');
                     var $ext = $this.attr('regex');
@@ -79,7 +79,7 @@
         {% include 'message.html' %}
         <div class="row justify-content-center h-100" style="margin-top: 75px;">
             <div class="col-lg-8">
-                <h1 class="text-center course-prereg-header" style="color: darkblue">Kurs Yönetimi ve Ön Başvurular</h1>
+                <h1 class="text-center course-prereg-header" style="color: darkblue">Course Management and Pre-Registrations</h1>
                 <hr>
                 <div style="height: 450px; overflow-y: scroll; overflow: auto">
                     <div class="table-responsive">
@@ -89,27 +89,27 @@
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KURS
+                                    COURSE
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    ÖN BAŞVURU SAYISI
+                                    PRE-REGISTRATIONS
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KURS DURUM
+                                    COURSE STATUS
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    BAŞVURANLAR LİSTESİ
+                                    APPLIERS LIST
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    İŞLEM
+                                    ACTION
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KAYIT KAPAT
+                                    CLOSE REGISTRATIONS
                                 </th>
                             </tr>
                             </thead>
@@ -134,7 +134,7 @@
                                             {% csrf_token %}
                                             <div class="text-center">
                                                 <input class="btn btn-primary"
-                                                       type="submit" value="Görüntüle">
+                                                       type="submit" value="Show">
                                             </div>
                                         </form>
                                     </td>
@@ -144,12 +144,12 @@
                                                 <button class="sendPaymentPage btn btn-success"
                                                         course_code="{{ course.course_code }}"
                                                         url="{% url 'send-mails' %}">
-                                                    <i class="fa fa-check"></i> Kesin Kayıtları Aç
+                                                    <i class="fa fa-check"></i> Open Certain Registrations
                                                 </button>
                                                 <button class="cancelCourse btn btn-danger"
                                                         course_code="{{ course.course_code }}"
                                                         url="{% url 'cancel-course' %}">
-                                                    <i class="fa fa-times"></i> Kursu İptal Et / Bitir
+                                                    <i class="fa fa-times"></i> Decline Course / Finish Course
                                                 </button>
                                             </div>
                                         </div>
@@ -158,7 +158,7 @@
                                         <button class="closeRegistration btn btn-warning"
                                                 url="{% url 'close-registration' %}"
                                                 regex="{{ course.registering_extension }}">
-                                            <i class="fa fa-exclamation-triangle"></i> Kayıtları Kapat
+                                            <i class="fa fa-exclamation-triangle"></i> Close Registrations
                                         </button>
                                     </td>
                                     </form>

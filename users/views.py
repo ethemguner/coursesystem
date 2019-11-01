@@ -44,7 +44,7 @@ def user_register(request):
                 if user.is_active:
                     login(request, user)
                     messages.success(request,
-                                     'Kaydınız başarıyla tamamlandı. E-mail adresinizi kontrol ediniz.',
+                                     'Your registration has completed. Welcome!',
                                      extra_tags="success")
 
                     subject = "EGE Uzem kaydınız alındı."
@@ -52,11 +52,11 @@ def user_register(request):
                     message = ""
                     html_msg = """
                         <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                        Sayın <b>{}</b>, kaydınız başarılı bir şekilde oluşturuldu.
+                        Dear <b>{}</b>, welcome to Course.
                         </p>
                         <p style="font-family: 'Trebuchet MS'; font-size: 17px;">
-                        <a href="http://127.0.0.1:8000/auth/login/">Buradan</a> giriş yaptıktan sonra "Bilgilerim" kısmından 
-                        kurum bağlantınıza göre belgenizi yükleyiniz. Aksi taktirde kurs başvurularında bulunamazsınız.</p>
+                        <a href="http://127.0.0.1:8000/auth/login/">From here</a> you can login.
+                        Don't forget to upload your document from "My Profile". Have a nice day!</p>
                     """.format(request.user.get_full_name())
 
                     send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=True)
@@ -82,7 +82,7 @@ def user_login(request):
                         login(request, user)
                         if request.user.is_staff:
                             return HttpResponseRedirect(reverse('panel'))
-                    loginMsg = "{}, hoşgeldiniz.".format(request.user.get_full_name())
+                    loginMsg = "{}, welcome.".format(request.user.get_full_name())
                     messages.success(request, loginMsg, extra_tags='success')
                     return HttpResponseRedirect(reverse('user-panel'))
         else:
@@ -101,7 +101,7 @@ def user_login_mobile(request):
                     login(request, user)
                     if request.user.is_staff:
                         return HttpResponseRedirect(reverse('panel'))
-                loginMsg = "{}, hoşgeldiniz.".format(request.user.get_full_name())
+                loginMsg = "{}, welcome.".format(request.user.get_full_name())
                 messages.success(request, loginMsg, extra_tags='success')
                 return HttpResponseRedirect(reverse('user-panel'))
     else:
@@ -135,7 +135,7 @@ def update_information(request):
                 pass
 
             user.profile.save()
-            msg = "Bilgileriniz başarıyla güncellendi."
+            msg = "Your information have updated successfully."
             messages.success(request, msg, extra_tags="success")
             return HttpResponseRedirect(reverse('user-panel'))
     else:
@@ -165,13 +165,6 @@ def user_panel(request):
                         courses.append(course)
 
         user = get_object_or_404(Profile, user=request.user)
-        """
-        try:
-            certificate = Certificate.objects.get(user=request.user)
-        except Certificate.DoesNotExist:
-            certificate = None
-        """
-
         user_courses = user.course.all()
     return render(request, 'users/user-panel.html', context={'courses': courses, 'user_courses': user_courses,
                                                              'form':form})
@@ -187,7 +180,8 @@ def send_prereg(request, code):
 
         for prereg in preregs:
             if user.username in prereg.user.username:
-                messages.success(request, 'Bu kursa bir kere ön başvuruda bulunabilirsiniz.', extra_tags='danger')
+                messages.success(request,
+                                 'You have already made a pre-registration for this course.', extra_tags='danger')
                 return HttpResponseRedirect(reverse('user-panel'))
 
         if payments.count() > 0:
@@ -197,7 +191,8 @@ def send_prereg(request, code):
                 prereg = PreRegistration.objects.create(user=user)
                 course.prereg.add(prereg)
                 course.save()
-                messages.success(request, 'Ön başvurunuz başarılı bir şekilde alınmıştır.')
+                messages.success(request, 'We have received your pre-registration successfully. When this course open, '
+                                          'we will send an e-mail to you.')
                 return HttpResponseRedirect(reverse('user-panel'))
     return render(request, 'apply-course.html', context={'course': course})
 
@@ -212,7 +207,7 @@ def password_change(request):
             request.user.set_password(new_password)
             request.user.save()
             update_session_auth_hash(request, request.user)
-            messages.success(request, 'Şifreniz başarıyla güncellendi.', extra_tags='success')
+            messages.success(request, 'Your password has updated successfully.', extra_tags='success')
             return HttpResponseRedirect(reverse('user-panel'))
     return render(request, 'users/password-change.html', context={'form': form})
 
@@ -235,24 +230,24 @@ def forgot_password(request):
                     profile.user.set_password(code)
                     profile.user.save()
 
-            subject = "EGE Uzem | Şifre yenileme talebi alındı."
+            subject = "Course | Password changing request."
             from_mail = settings.EMAIL_HOST_USER
             message = ""
             html_msg = """
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                Şifre güncelleme talebinde bulunuldu. Aşağıdaki kod ile hesabınıza giriş yapabilirsiniz.
+                We've received a password changing request from you. You can login with the code below.
                 </p>
                             
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                <b>KOD: {}</b>
+                <b>CODE: {}</b>
                 </p>
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
-                <u>HESABINIZA GİRİŞ YAPTIKTAN SONRA "PROFİLİM" VE ARDINDAN "ŞİFRE DEĞİŞTİR" KISMINA TIKLAYIP
-                ŞİFRENİZİ DEĞİŞTİRMEYİ UNUTMAYINIZ.</u><p/>
+                <u>AFTER YOU LOGIN, UPDATE YOUR PASSWORD. 
+                CLICK "My Profile" and UPDATE IT FROM "Change my password."</u><p/>
                 
             """.format(code)
             send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
-            messages.success(request, 'Şifre yenilendi. E-mail adresinizi kontrol ediniz.')
+            messages.success(request, 'Your password has renewed. Please check your e-mail.')
             return HttpResponseRedirect(reverse('forgot-password'))
     return render(request, 'users/forgot_password.html', context={'form':form})
 
@@ -269,24 +264,24 @@ def mobile_forgotpassword(request):
                 profile.user.set_password(code)
                 profile.user.save()
 
-        subject = "EGE Uzem | Şifre yenileme talebi alındı."
+        subject = "Course | Password changing request."
         from_mail = settings.EMAIL_HOST_USER
         message = ""
         html_msg = """
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-            Şifre güncelleme talebinde bulunuldu. Aşağıdaki kod ile hesabınıza giriş yapabilirsiniz.
+            We've received a password changing request from you. You can login with the code below.
             </p>
 
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-            <b>KOD: {}</b>
+            <b>CODE: {}</b>
             </p>
             <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
-            <u>HESABINIZA GİRİŞ YAPTIKTAN SONRA "PROFİLİM" VE ARDINDAN "ŞİFRE DEĞİŞTİR" KISMINA TIKLAYIP
-            ŞİFRENİZİ DEĞİŞTİRMEYİ UNUTMAYINIZ.</u><p/>
+            <u>AFTER YOU LOGIN, UPDATE YOUR PASSWORD. 
+            CLICK "My Profile" and UPDATE IT FROM "Change my password."</u><p/>
 
         """.format(code)
         send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
-        messages.success(request, 'Şifre yenilendi. E-mail adresinizi kontrol ediniz.')
+        messages.success(request, 'Your password has renewed. Please check your e-mail.')
         return HttpResponseRedirect(reverse('forgot-password'))
     return render(request, 'users/mobile_forgotpassword.html', context={'form': form})
 
@@ -303,32 +298,27 @@ def confirm_delete_images(request):
             user.profile.save()
             email = user.email
 
-            subject = "EGE Uzem | Belgenizin geçerlilik süresi doldu."
+            subject = "Course | Your document's validity period has finished."
             from_mail = settings.EMAIL_HOST_USER
             message = ""
             html_msg = """
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                Merhaba {},
+                Hi {},
                 </p>
-    
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                <b>Ege Üniversitesi UZEM Kurs sistemindeki kayıtlı hesabınızda yüklemiş olduğunuz belgenin geçerlilik
-                süresi dolmuştur.
-                </b>
                 </p>
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
-                <u>"Profilim" sekmesinden ilgili kurum bağlantınıza göre gerekli belgeyi güncellemeyi unutmayınız.</u><p/>
+                <u>Please update your document from "My Profile".</u><p/>
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                Ege Üniversitesi UZEM Kurs Kayıt Sistemine giriş yapmak için 
-                <a href="#">tıklayınız.</a></p>
+                Login from <a href="127.0.0.1:8000/auth/login/">here.</a></p>
                 
                 <p style="font-family: 'Trebuchet MS'; font-size: 18px; font-color: red;">
-                İyi günler dileriz.<p/>
+                Have a nice day!<p/>
     
             """.format(user.get_full_name())
             send_mail(subject, message, from_mail, [email], html_message=html_msg, fail_silently=True)
 
-            messages.success(request, 'İşlem başarılı. {} kullanıcıya işlem hakkında bilgi gönderildi.'.format(len(users)))
+            messages.success(request, 'The update information has sent {} account successfully.'.format(len(users)))
     else:
         return HttpResponseRedirect(reverse('user-panel'))
     return JsonResponse(data=data)

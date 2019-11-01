@@ -1,7 +1,7 @@
 from django import forms
 
 class NoticeForm(forms.Form):
-    message = forms.CharField(widget=forms.Textarea, required=True, label="Duyuru:")
+    message = forms.CharField(widget=forms.Textarea, required=True, label="Notice:")
 
     def __init__(self, *args, **kwargs):
         super(NoticeForm, self).__init__(*args, **kwargs)

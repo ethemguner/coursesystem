@@ -11,9 +11,8 @@ class FinalRegistration(models.Model):
     registering_date = models.DateTimeField(auto_now_add=True, auto_now=False)
 
     class Meta:
-        verbose_name_plural = "Kesin Kayıtlar"
+        verbose_name_plural = "Certain Registrations"
 
     def __str__(self):
-        notice = "{} kursu için {} adlı kullanıcının kesin kaydı yapıldı.".format(self.course.name,
-                                                                                self.user.get_full_name())
+        notice = "{}'s final registration has been applied for {}".format(self.user.get_full_name(),self.course.name)
         return notice

@@ -4,48 +4,46 @@ from prereg.models import PreRegistration
 class Course(models.Model):
 
     STATUS = (
-        (None, 'Seçiniz'),
-        ('1', 'Devam ediyor.'),
-        ('2', 'Ön kayıtlar açık.'),
-        ('3', 'Kesin kayıtlar açık.'),
-        ('4', 'Bitti.'),
+        (None, 'Choose'),
+        ('1', 'Continuing.'),
+        ('2', 'Pre-registration is open.'),
+        ('3', 'Certain registration is open.'),
+        ('4', 'Finished.'),
     )
 
     CATEGORIES = (
-        (None, 'Seçiniz'),
+        (None, 'Choose'),
         ('1', 'Senkron'),
         ('2', 'Asenkron')
     )
 
-    name = models.CharField(max_length=250, null=True, blank=False, verbose_name="Kurs:")
-    start_at = models.DateTimeField(null=True, blank=False, verbose_name="Başlangıç tarihi:")
-    finish_at = models.DateTimeField(null=True, blank=False, verbose_name="Bitiş tarihi:")
-    content = models.TextField(max_length=6000, null=True, blank=True, verbose_name="İçerik:")
-    status = models.CharField(max_length=45, null=True, blank=False, verbose_name="Kurs Durumu:", choices=STATUS)
+    name = models.CharField(max_length=250, null=True, blank=False, verbose_name="Course:")
+    start_at = models.DateTimeField(null=True, blank=False, verbose_name="Start at:")
+    finish_at = models.DateTimeField(null=True, blank=False, verbose_name="Finish at:")
+    content = models.TextField(max_length=6000, null=True, blank=True, verbose_name="Content:")
+    status = models.CharField(max_length=45, null=True, blank=False, verbose_name="Status:", choices=STATUS)
     course_code = models.CharField(max_length=5, null=True, blank=True)
-    price = models.IntegerField(null=True, blank=False, verbose_name="Fiyat:")
-    prereg = models.ManyToManyField(PreRegistration, blank=True, verbose_name="Ön başvuru:")
+    price = models.IntegerField(null=True, blank=False, verbose_name="Price:")
+    prereg = models.ManyToManyField(PreRegistration, blank=True, verbose_name="Pre-registration:")
     registering_extension = models.CharField(max_length=25, null=True, blank=True, editable=True)
-    is_registerable = models.BooleanField(default=False, verbose_name="Kesin kaydı aç.")
-    category = models.CharField(max_length=45, null=True, blank=False, verbose_name="Kurs Kategori:", choices=CATEGORIES)
-    class_link = models.CharField(max_length=150, null=True, blank=True, verbose_name="Sanal sınıf linki:")
+    is_registerable = models.BooleanField(default=False, verbose_name="Open certain registrations.")
+    category = models.CharField(max_length=45, null=True, blank=False, verbose_name="Course category:", choices=CATEGORIES)
 
     class Meta:
-        verbose_name_plural = "Kurslar"
+        verbose_name_plural = "Courses"
 
     def __str__(self):
         return self.name
 
 class CourseDiscount(models.Model):
     discount_1 = models.IntegerField(null=True, blank=False,
-                                     verbose_name="Ege Üniversitesi personel / öğrenci / mezun indirimi:")
+                                     verbose_name="Special discount for a group/person etc. 1")
     discount_2  = models.IntegerField(null=True, blank=False,
-                                     verbose_name="Gazi / engell / şehit yakını indirimi:")
-    bank_info = models.TextField(max_length=500, null=True, blank=True, verbose_name="Banka hesap bilgileri:")
+                                     verbose_name="Special discount for a group/person etc. 2")
+    bank_info = models.TextField(max_length=500, null=True, blank=True, verbose_name="Bank account information:")
 
     class  Meta:
-        verbose_name_plural = "İndirim"
+        verbose_name_plural = "Discount"
 
     def __str__(self):
-        return "EgeUni Personel/ogrenci/mezun -> {} Gazi/engelli/sehit yakini 2 -> {}".format(self.discount_1,
-                                                                                              self.discount_2)
+        return "Discount 1 -> {} Discount 2 -> {}".format(self.discount_1, self.discount_2)

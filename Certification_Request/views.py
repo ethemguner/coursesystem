@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 from courses.models import Course
+
 def certificationrequest_list(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('user-panel'))
@@ -27,20 +28,20 @@ def upload_certificate(request, username, course_code):
         certificate.is_downloadable = True
         certificate.save()
 
-        subject = "EGE UZEM | Sertifikanız yüklendi."
+        subject = "Course | Your certification has been uploaded."
         from_mail = settings.EMAIL_HOST_USER
         message = ""
         html_msg = """
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-            Sayın <b>{}</b>, talep ettiğiniz sertifika yüklendi.
+            Dear <b>{}</b>, we've uploaded your certification.
             </p>
             <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-            <a href="http://127.0.0.1:8000/auth/login/">Buradan</a> giriş yaptıktan sonra ekranın sağ kısmındaki 
-            "Kurslarım" tablosundaki "İNDİR & GÖRÜNTÜLE" yazısına tıklayınız.</p>
+            <a href="http://127.0.0.1:8000/auth/login/">Go to our website</a> and the right side of the page
+            on "My Courses" click "Download".</p>
         """.format(user.get_full_name())
 
         send_mail(subject, message, from_mail, [user.email], html_message=html_msg, fail_silently=True)
 
-        messages.success(request, 'Kullanıcının sertifikası yüklendi.', extra_tags='success')
+        messages.success(request, 'Certification has been uploaded successfully.', extra_tags='success')
         return HttpResponseRedirect(reverse('certification-list'))
     return render(request, 'admin/upload-pdf.html', context={'form':form, 'user':user, 'course_code':course_code})

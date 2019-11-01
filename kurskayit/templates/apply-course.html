@@ -10,19 +10,18 @@
         <div class="row" style="margin-top: 100px">
             <div class="col-sm-6 col-md-6 col-lg-6 offset-3">
                 <div class="col-md-8 offset-2 text-center">
-                    <h2 class="panel-headers">Kurs Ön Başvuru</h2>
-                    <p class="lead">Şu kurs için ön başvuru yapıyorsunuz: {{ course.name }}</p>
+                    <h2 class="panel-headers">Course Pre-Registrations</h2>
+                    <p class="lead">You're applying for this course: {{ course.name }}</p>
                     <p class="lead">
-                        Yeterli kontenjan oluştuduğunda kesin kayıt için e-mail adresinize mail gönderilecektir.
-                        Mail içeriğinde ödeme ile alakalı gerekli bilgiler verilecektir.
+                        When this course reach enough participation, we will open the certain
+                        registrations and send e-mail to you.
                     </p>
-                    <h4>UYARI:</h4>
-                    <p class="lead">Lütfen bilgilerinizi "Bilgilerim" kısmından kontrol ediniz.
-                        Kesin kayıtlar açıldığında bu bilgiler doğrultusunda ödeme bildiriminde bulunacaksınız.
+                    <h4>WARNING:</h4>
+                    <p class="lead">Before applying, check your information from "My Profile". We'll use
+                        these information to confirm your payment & registration.
                     </p>
                     <p style="font-family: Bahnschrift;">
-                        <u>"BAŞVUR" butonuna bastığınızda ön başvuru için sistemimize bilgileriniz kaydedilir.
-                        Bu kursa kesin kayıt değildir. Herhangi bir ödeme yapmanız gerekmez.</u>
+                        <u>This isn't certain registration. You don't need to pay anything.</u>
                     </p>
                 </div>
                 <form method="post" action="{% url 'send-application' course.course_code %}">
@@ -30,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-8 offset-2 text-center">
                             <input type="submit" class="btn btn-primary"
-                                                            value="BAŞVUR"
+                                                            value="APPLY"
                                                             style="margin-top: 10px;">
                         </div>
                     </div>

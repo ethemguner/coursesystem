@@ -6,8 +6,7 @@
         {% include 'admin/admin-navbar.html' %}
         <div class="row">
             <div class="col-lg-8 offset-2">
-                <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Kurs Bilgi
-                    Güncelleme</h1>
+                <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Update Course</h1>
                 <form method="post" action="#">
                     {% csrf_token %}
                     <!-- FORM FIELDS-->
@@ -34,7 +33,7 @@
                     {% endfor %}
                     <div class="row">
                         <div class="col-md-8 offset-2">
-                            <input type="submit" class="btn btn-primary float-lg-right" value="Güncelle"
+                            <input type="submit" class="btn btn-primary float-lg-right" value="Update"
                                    style="margin-top: 10px">
                         </div>
                     </div>

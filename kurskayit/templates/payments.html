@@ -10,10 +10,10 @@
         <div class="row justify-content-center h-100">
             <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 ">
                 <div class="col-sm-8 col-md-8 col-lg-8 col-xl-8 offset-2">
-                    <h2 class="panel-headers text-center">Kurs Ödeme Bildirimi</h2>
-                    <p class="lead">Şu kurs için ödeme bildirimi yapıyorsunuz: {{ course.name }}</p>
+                    <h2 class="panel-headers text-center">Course Payment</h2>
+                    <p class="lead">You're paying for this course: {{ course.name }}</p>
                     <p class="lead">
-                        Ödeme yapmanız gereken tutar:
+                        Price that you need to pay:
                         {% if request.user.profile.title == "3" %}
                             {{ course.price }}TL
                         {% elif request.user.profile.title == "1" %}
@@ -22,23 +22,24 @@
                             {{ course_price_calc|discount_2:course.price }}
                         {% endif %}
                     </p>
-                    <p class="lead" style="font-size: 22px;"><strong>Banka Hesap Bilgileri</strong></p>
+                    <p class="lead" style="font-size: 22px;"><strong>Bank account info:</strong></p>
                     <p class="lead">
                         {{ course_price_calc|get_bank|linebreaksbr }}
                     </p>
                     <p>
-                        <button class="btn btn-warning" title="Henüz aktif değil." disabled>Online Ödeme Yap</button>
+                        <button class="btn btn-warning" title="Not active yet." disabled>Online Payment</button>
                     </p>
-                    <h4>Mevcut Belgeniz:</h4>
+                    <h4>Your current document:</h4>
                     {% if request.user.profile.title == "1" or request.user.profile.title == "2" %}
                         {% if profile.get_image == None %}
-                            <p class="text-danger">Yüklemiş olduğunuz bir belge bulunamadı. Yüklemek için
-                            <a href="{% url 'update' %}">tıklayınız.</a>
+                            <p class="text-danger">There is no document you upload. To upload
+                            <a href="{% url 'update' %}">click here.</a>
                         {% else %}
                             <img src="{{ profile.get_image }}" class=""><br>
                         {% endif %}
                     {% else %}
-                        <p>Kurum bağlantınız "Kurum Dışı" olarak seçildiği için belge yüklemenize gerek yoktur.</p>
+                        <p>You don't need to upload any document because you set
+                            your Institution & Group Relation as "External".</p>
                     {% endif %}
                 </div>
                 <form method="post" action="{% url 'send-payment' course.registering_extension %}"
@@ -71,16 +72,16 @@
                             {% if request.user.profile.title == "1" or request.user.profile.title == "2" %}
                                 {% if profile.get_image == None %}
                                     <input type="submit" class="btn btn-primary float-lg-right"
-                                           value="Ödeme Bildirimini Gönder"
+                                           value="Send My Payment Notification"
                                            style="margin-top: 10px" disabled>
                                 {% else %}
                                     <input type="submit" class="btn btn-primary float-lg-right"
-                                           value="Ödeme Bildirimini Gönder"
+                                           value="Send My Payment Notification"
                                            style="margin-top: 10px">
                                 {% endif %}
                             {% else %}
                                 <input type="submit" class="btn btn-primary float-lg-right"
-                                       value="Ödeme Bildirimini Gönder"
+                                       value="Send My Payment Notification"
                                        style="margin-top: 10px">
                             {% endif %}
                         </div>

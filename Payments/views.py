@@ -17,7 +17,7 @@ def payment_gateaway(request, ext):
     payments = Payment.objects.filter(course=course)
 
     if user.username in payments.values_list('user__username', flat=True):
-        messages.success(request, 'Bu kursa kaydolmak için zaten bir ödeme yaptınız.', extra_tags='danger')
+        messages.success(request, 'You already have this course or you have sent the payment.', extra_tags='danger')
         return HttpResponseRedirect(reverse('user-panel'))
     else:
         if form.is_valid():
@@ -27,25 +27,25 @@ def payment_gateaway(request, ext):
             payment.image = form.cleaned_data.get('image')
             payment.save()
 
-            subject = "Ege UZEM | Ödemeniz alınmıştır."
+            subject = "Course | We've received your payment."
             from_mail = settings.EMAIL_HOST_USER
             message = ""
             mail = user.email
             html_msg = """
-            <p style="font-family: Calibri Light; font-size: 20px;">Sayın {},</p>
+            <p style="font-family: Calibri Light; font-size: 20px;">Dear {},</p>
             
             <p style="font-family: Calibri Light; font-size: 18px;">
-            {} adlı kurs için yaptığınız ödeme bildirimi alınmıştır.
+            We've received your payment for {}.
             </p>
             
             <p style="font-family: Calibri Light; font-size: 18px;">
-            Ödemeniz 1-3 iş günü içerisinde kontrol edilecektir. Onaylandığında
-            kursa kesin kaydınız gerçekleşecektir. Onay bilgisi e-mail adresinize gönderilecektir.
+            We'll check your payment and verify your registration. It may take at least 1 day to done.
             </p>
             """.format(user.get_full_name(), course.name)
 
             send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=True)
-            messages.success(request, 'Ödeme bildiriminiz başarıyla gönderildi. E-mail adresinizde ödemeye ilişkin bilgiler gönderilmiştir.', extra_tags='success')
+            messages.success(request, 'Your payment has sent successfully. '
+                                      'Your registration will be verify in 24 hours.', extra_tags='success')
             return HttpResponseRedirect(reverse('user-panel'))
     return render(request, 'payments.html', context={'course': course, 'form': form, 'profile': profile})
 

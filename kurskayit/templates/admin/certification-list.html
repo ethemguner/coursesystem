@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% block TITLE %}Sertifika Talep Listeleri{% endblock %}
+{% block TITLE %}Certificate Requests{% endblock %}
 
 {% block BODY %}
     <div class="container-fluid">
         {% include 'admin/admin-navbar.html' %}
         {% include 'message.html' %}
         <div class="col-lg-6 offset-3">
-            <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Sertifika Talepleri
+            <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Certificate Requests
                 ({{ certifications.count }})</h1>
             <hr>
         </div>
@@ -20,15 +20,15 @@
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    AD & SOYAD
+                                    NAME & LASTNAME
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KURSU
+                                    COURSE
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    İŞLEM
+                                    ACTION
                                 </th>
                             </tr>
                             </thead>
@@ -47,13 +47,13 @@
                                     <td scope="row" style="font-family: 'Calibri'; font-size: 16px">
                                         <div class="text-center">
                                             {% if certification.is_downloadable %}
-                                            <p class="text-warning">Sertifika yüklenmiş.</p>
+                                            <p class="text-warning">No certificate uploaded.</p>
                                             {% else %}
                                             <button class="showInformation btn btn-primary">
                                                 <i class="fa fa-file-pdf-o"></i>
                                                 <a href="{% url 'upload-certificate' certification.user.username certification.course.course_code %}"
                                                    style="color: white">
-                                                    SERTİFİKA YÜKLE
+                                                    UPLOAD CERTIFICATE
                                                 </a>
                                             </button>
                                             {% endif %}
@@ -64,9 +64,9 @@
                             {% empty %}
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

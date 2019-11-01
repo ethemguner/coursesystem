@@ -12,22 +12,22 @@ def upload_to(instance, filename):
     extension = filename.split('.')[-1]
     new_name = "{}.{}".format(str(uuid4()), extension)
     unique_id = instance.user.username
-    return os.path.join('odeme_dekontlari', unique_id, new_name)
+    return os.path.join('payments', unique_id, new_name)
 
 class Payment(models.Model):
     account_owner = models.CharField(max_length=100, null=True, blank=False)
     payment_date = models.DateTimeField(auto_now_add=True, auto_now=False)
-    image = models.ImageField(upload_to=upload_to, verbose_name='Ödeme dekontu:', blank=False)
-    user = models.ForeignKey(User, null=True, blank=False, verbose_name="Ödeme yapan kullanıcı:",
+    image = models.ImageField(upload_to=upload_to, verbose_name='Payment receipt:', blank=False)
+    user = models.ForeignKey(User, null=True, blank=False, verbose_name="Who paid:",
                              on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, null=True, blank=False, verbose_name="Ödeme yapılan kurs:",
+    course = models.ForeignKey(Course, null=True, blank=False, verbose_name="Course",
                                on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name_plural = "Ödemeler"
+        verbose_name_plural = "Payments"
 
     def __str__(self):
-        return "{} tarafindan odeme mevcut.".format(self.user.get_full_name())
+        return "There is a payment form {}".format(self.user.get_full_name())
 
     def save(self, *args, **kwargs):
         #Image resize.

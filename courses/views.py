@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse, HttpResponse
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, reverse
 from .models import Course, CourseDiscount
 from .forms import CourseAddingForm
 import string, random
@@ -10,9 +10,9 @@ import datetime
 from dateutil import relativedelta
 from django.conf import settings
 from django.core.mail import send_mail
-from users.forms import EditClassIDandPassForm
-from users.models import Profile
 from django.contrib.auth.models import User
+import os
+from django.http import JsonResponse
 
 def course_adding(request):
     if request.user.is_staff:
@@ -78,13 +78,6 @@ def active_courses(request):
         return HttpResponseRedirect(reverse('user-panel'))
     return render(request, 'course/active-courses.html', context={'finalregs':finalregs})
 
-def active_courses_detail(request, id):
-    if request.user.is_staff:
-        active_course = get_object_or_404(FinalRegistration, id=id)
-    else:
-        return HttpResponseRedirect(reverse('user-panel'))
-    return render(request, 'course/active-courses-detail.html', context={'active_course':active_course})
-
 def course_detail(request, code):
     if not request.user.is_active:
         return HttpResponseRedirect(reverse('login'))
@@ -106,10 +99,10 @@ def course_discounts(request):
             discount.discount_2 = d2
 
             if len(account_info) == 0:
-                messages.success(request, 'İndirim uygulanmıştır.', extra_tags='success')
+                messages.success(request, 'Discount applied', extra_tags='success')
             else:
                 discount.bank_info = account_info
-                messages.success(request, 'Banka bilgileri güncellenmiş ve indirim uygulanmıştır.', extra_tags='success')
+                messages.success(request, 'Bank account information and discounts updated.', extra_tags='success')
 
             discount.save()
             return HttpResponseRedirect(reverse('course-discount'))
@@ -136,27 +129,26 @@ def send_certificationrequest(request, pk):
         diff_tuple = diff.years, diff.months, diff.days
         if diff_tuple[0] >= 0 and diff_tuple[1] >= 0 and diff_tuple[2] >= 0:
             if Certificate.objects.filter(user=request.user, course=course).exists():
-                messages.success(request, 'Zaten bir talepte bulundunuz. Tekrar talep gönderemezsiniz. Sertifikanız '
-                                          'yönetici tarafından yüklenene kadar bekleyiniz.',
+                messages.success(request, "You've already sent a request. "
+                                          "Please wait until we upload your certification.",
                                  extra_tags='danger')
                 return HttpResponseRedirect(reverse('user-panel'))
             else:
                 Certificate.objects.create(user=request.user, course=course).save()
-                subject = "EGE UZEM | Sertifikanız yüklendi."
+                subject = "Course | A new certification request has taken."
                 from_mail = settings.EMAIL_HOST_USER
                 message = ""
                 html_msg = """
                     <p style="font-family: 'Trebuchet MS'; font-size: 18px;">
-                    Bir kurs talebi alındı. Lütfen Yönetici Panelinden ilgili talebi/talepleri kontrol ediniz.
+                    Please check certification request on "Certification Requests" from management panel.
                     </p>
                 """
 
-                send_mail(subject, message, from_mail, ['egeuniuzem@gmail.com'], html_message=html_msg, fail_silently=True)
+                send_mail(subject, message, from_mail, [os.environ['EMAIL_ADRESS']], html_message=html_msg, fail_silently=True)
             messages.success(request,
-                    'Kurs talebiniz alınmıştır. Sertifikanız yüklendiğinde e-mailinize indirme linki gönderilecektir.')
+                    'Your certification request has taken. When we upload your certification, we will send a e-mail.')
         else:
-            messages.success(request, 'Bitmeyen bir kurs için sertifika talebinde bulunamazsınız.', extra_tags="danger")
-
+            messages.success(request, 'You cannot send a request for an unfinished course.', extra_tags="danger")
     return HttpResponseRedirect(reverse('user-panel'))
 
 def course_user_list(request, code):
@@ -164,18 +156,13 @@ def course_user_list(request, code):
     users = course.profile_set.all()
     return render(request, 'course/course-user-list.html', context={'users':users})
 
-def user_class_edit(request, username):
-    form = EditClassIDandPassForm(data=request.POST or None)
-    user = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user)
+def user_contact_info(request):
+    data = {'is_valid': True, 'name': '', 'mail': '', 'phone': '', 'other_phone': ''}
 
-    if form.is_valid():
-        class_id = form.cleaned_data.get('class_id', '')
-        class_pass = form.cleaned_data.get('class_pass', '')
+    name = request.GET.get('name')
+    mail = request.GET.get('mail')
+    phone = request.GET.get('phone')
+    other_phone = request.GET.get('other_phone')
 
-        profile.class_id = class_id
-        profile.class_pass = class_pass
-        profile.save()
-        messages.success(request, 'Kullanıcı sanal sınıf giriş ID ve şifresi kaydedildi.', extra_tags='success')
-        return HttpResponseRedirect(reverse('user-class-edit', kwargs={'username':username}))
-    return render(request, 'course/edit-id-pass.html', context={'form':form, 'username':username})
+    data.update({'name': name, 'mail': mail, 'phone': phone, 'other_phone': other_phone})
+    return JsonResponse(data=data)

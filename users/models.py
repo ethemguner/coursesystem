@@ -12,29 +12,27 @@ def upload_to(instance, filename):
     extension = filename.split('.')[-1]
     new_name = "{}.{}".format(str(uuid4()), extension)
     unique_id = instance.user.username
-    return os.path.join('belgeler', unique_id, new_name)
+    return os.path.join('documents', unique_id, new_name)
 
 class Profile(models.Model):
     TITLE = (
-        (None, 'Seçiniz'),
-        ('1', 'Ege Üniversitesi öğrencisi / personeli / mezunu.'),
-        ('2', 'Gazi / engelli / şehit yakını.'),
-        ('3', 'Kurum dışı')
+        (None, 'Choose'),
+        ('1', 'Institution or a Group 1'),
+        ('2', 'Institution or a Group 2'),
+        ('3', 'External')
     )
 
-    user = models.OneToOneField(User, null=True, blank=False, verbose_name="Kullanıcı", on_delete=models.CASCADE)
-    nationalid = models.CharField(max_length=11, null=True, blank=False, verbose_name="T.C Kimlik")
-    phone = models.CharField(max_length=10, null=True, blank=False, verbose_name="Telefon numarası")
-    other_phone = models.CharField(max_length=10, null=True, blank=False, verbose_name="Diğer telefon numarası")
-    title =models.CharField(max_length=50,null=True, blank=False, verbose_name="Kurum bağlantısı",choices=TITLE)
-    image = models.ImageField(upload_to=upload_to, verbose_name='Belge:', blank=True)
+    user = models.OneToOneField(User, null=True, blank=False, verbose_name="User", on_delete=models.CASCADE)
+    nationalid = models.CharField(max_length=11, null=True, blank=False, verbose_name="ID Number")
+    phone = models.CharField(max_length=10, null=True, blank=False, verbose_name="Phone number")
+    other_phone = models.CharField(max_length=10, null=True, blank=False, verbose_name="Other phone number")
+    title =models.CharField(max_length=50,null=True, blank=False, verbose_name="Institution or group",choices=TITLE)
+    image = models.ImageField(upload_to=upload_to, verbose_name='Document:', blank=True)
     created_date = models.DateTimeField(auto_now_add=True, auto_now=False)
     course = models.ManyToManyField(Course, blank=True)
-    class_id = models.CharField(max_length=50, null=True, blank=True, verbose_name="ID:")
-    class_pass = models.CharField(max_length=50, null=True, blank=True, verbose_name="Şifre:")
 
     class Meta:
-        verbose_name_plural = "Profiller"
+        verbose_name_plural = "Profiles"
 
     def __str__(self):
         return self.user.get_full_name()

@@ -8,24 +8,24 @@
         <div class="row">
             <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
                 <div class="card">
-                    <h5 class="card-header">Detaylar</h5>
+                    <h5 class="card-header">Details</h5>
                     <div class="card-body">
                         <div style="height: 450px; overflow-y: scroll; overflow: auto">
                             <h4 class="card-title" style="font-family: Bahnschrift; color: darkblue">{{ course.name }}</h4>
                             <hr>
                             <p><b style="font-family: Bahnschrift,serif; font-size: 18px;"><i class="fa fa-clock-o"></i>
-                                Başlangıç Tarihi:
+                                Start at:
                             </b> <span style="font-family: 'Calibri Light'; font-size: 19px;">{{ course.start_at }}</span></p>
                             <p><b style="font-family: Bahnschrift,serif; font-size: 18px;"><i class="fa fa-clock-o"></i>
-                                Bitiş Tarihi:
+                                Finish at:
                             </b> <span style="font-family: 'Calibri Light'; font-size: 19px;"> {{ course.finish_at }}</span></p>
                             <p><b style="font-family: Bahnschrift,serif; font-size: 18px;"><i class="fa fa-tag"></i>
-                                Ücret (indirimsiz):
+                                Price (without discount):
                             </b> <span style="font-family: 'Calibri Light'; font-size: 19px;"> {{ course.price }}TL</span></p>
                             <p><b style="font-family: Bahnschrift,serif; font-size: 18px;"><i class="fa fa-info-circle"></i>
-                                Kurs durum:
+                                Course status:
                             </b> <span style="font-family: 'Calibri Light'; font-size: 19px;"> {{ course_status|get_status:course.status }}</span></p>
-                            <h5>KURS İÇERİĞİ</h5>
+                            <h5>CONTENT OF COURSE</h5>
                             <hr>
                             <p class="card-text">{{ course.content|linebreaks }}</p>
                         </div>
@@ -34,15 +34,15 @@
                         {% if course.is_registerable == False %}
                             <a href="{% url 'send-application' course.course_code %}"
                                class="btn btn-primary float-lg-right">
-                                <i class="fa fa-file-text"></i> BAŞVUR
+                                <i class="fa fa-file-text"></i> APPLY
                             </a>
                         {% else %}
                             <a href="{% url 'send-payment' course.registering_extension %}"
                                class="btn btn-primary float-lg-right">
-                                <i class="fa fa-file-text"></i> KAYDOL</a>
+                                <i class="fa fa-file-text"></i> REGISTER</a>
                         {% endif %}
                     {% else %}
-                        <u class="float-lg-right text-center">Başvuru yapılamaz.</u>
+                        <u class="float-lg-right text-center">Cannot apply.</u>
                     {% endif %}
                 </div>
             </div>

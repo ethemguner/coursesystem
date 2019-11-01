@@ -7,10 +7,10 @@ class CourseGivenForm(forms.ModelForm):
         model = CourseGiven
         fields = ['request_title', 'limit_min', 'limit_max', 'request_content']
         labels = {
-            'request_title': 'Kurs Tanımı:',
-            'limit_min': 'Minimum kontenjan:',
-            'limit_max': 'Maksimum kontenjan:',
-            'request_content': 'Vermek istediğiniz kurs hakkında detaylar:'
+            'request_title': 'Course title:',
+            'limit_min': 'Min. quota:',
+            'limit_max': 'Max. quota:',
+            'request_content': 'Details about course that you want to give:'
         }
 
     def __init__(self, *args, **kwargs):
@@ -25,7 +25,7 @@ class CourseGivenForm(forms.ModelForm):
         limit_min = self.cleaned_data.get('limit_min')
         try:
             if limit_max < limit_min:
-                self.add_error('limit_max', 'Maksimum kontenjan, minimum kontenjandan küçük olamaz.')
+                self.add_error('limit_max', 'Max. quota cannot be lower than min. quota.')
         except TypeError:
             pass
 
@@ -34,8 +34,8 @@ class CourseTakenForm(forms.ModelForm):
         model = CourseTaken
         fields = ['request_title', 'request_content']
         labels = {
-            'request_title': 'Kurs Tanımı:',
-            'request_content': 'Talep ettiğiniz kurs hakkında detaylar:'
+            'request_title': 'Course title:',
+            'request_content': 'Details about course that you want to take:'
         }
 
     def __init__(self, *args, **kwargs):

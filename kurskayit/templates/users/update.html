@@ -1,26 +1,25 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block TITLE %}Profilim{% endblock %}
+{% block TITLE %}My Profile{% endblock %}
 
 {% block BODY %}
     {% include 'nav-bar.html' %}
     <div class="container-fluid" style="margin-top: 180px;">
     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6 offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3">
-        <h1>Profil Bilgilerim</h1>
+        <h1>My Profile</h1>
         <hr>
-        <p style="font-family: 'Calibri'">Merhaba {{ request.user.get_full_name }}. Bu sayfada bilgileriniz güncelleyebilirsiniz. Kurum bağlantınıza
-        göre ilgili belgeyi yüklemeyi unutmayınız. Ödeme bildirimi aldığımızda bu belgeye göre kurum bağlantınız
-        onaylanır ve indirim uygulanır.</p>
+        <p style="font-family: 'Calibri'">Hello {{ request.user.get_full_name }}. You can update your information on this page. Don't
+        forget to upload your document according to your Institution & Group relation.</p>
     </div>
         <div class="row justify-content-center h-100" style="margin-top: 30px;">
             <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3 offset-sm-3 offset-md-3 offset-lg-3 offset-xl-3">
                 <div class="card border-secondary mb-3" style="max-width: 20rem;">
-                    <div class="card-header">Profilim</div>
+                    <div class="card-header">My Profile</div>
                     <div class="card-body text-secondary">
-                        <h5 class="card-title">Şifre Yönetimi</h5>
-                        <p class="card-text">Şifrenizi alttan değiştirebilirsiniz.</p>
+                        <h5 class="card-title">Password Management</h5>
+                        <p class="card-text">You can change your password from below.</p>
                         <p></p>
-                        <p><a href="{% url 'password-change' %}">Şifre değiştir.</a> </p>
+                        <p><a href="{% url 'password-change' %}">Change password.</a> </p>
                     </div>
                 </div>
             </div>
@@ -51,7 +50,7 @@
                     {% endfor %}
                     <div class="row">
                         <div class="col-sm-6 col-md-6 col-lg-6">
-                            <input type="submit" class="btn btn-success float-lg-right" value="Güncelle"
+                            <input type="submit" class="btn btn-success float-lg-right" value="Update"
                                    style="margin-top: 10px">
                         </div>
                     </div>

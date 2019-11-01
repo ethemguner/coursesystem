@@ -10,23 +10,22 @@
     <script rel="script" type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     {% block HEAD %}{% endblock %}
-    <title>Ege Üni. UZEM | Giriş yap</title>
+    <title>Course | Login</title>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row justify-content-center flex-md-grow-1" style="height: 100vh;">
         <div class="col-sm-6 col-md-6 col-lg-6" style="background-color: rgb(33,66,99);">
             <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 200px; color: honeydew">
-                <h1 class="text-center" style="margin-bottom: 75px">Logo alanı</h1>
+                <h1 class="text-center" style="margin-bottom: 75px">Logo area</h1>
                 <h1 class="text-center" style="color: whitesmoke; font-size: 64px; font-family: 'Calibri'">
-                    Hoşgeldiniz.</h1>
+                    Welcome.</h1>
                 <p class="text-center" style="color: lightgray; font-size: 25px; font-family: Bahnschrift">Text / link
-                    alanı.</p><br><br>
+                    area.</p><br><br>
             </div>
         </div>
         <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 250px;">
-            <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Ege UZEM
-                Kullanıcı Girişi</h1>
+            <h1 class="text-center course-prereg-header" style="margin-top: 40px; color: darkblue">Course User Login</h1>
             <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
                 <!-- FORM FIELDS-->
@@ -54,10 +53,10 @@
                 {% endfor %}
                 <div class="row">
                     <div class="col-sm-8 col-md-8 col-lg-8 offset-2">
-                        <a href="{% url 'forgot-password' %}">Şifremi unuttum.</a>
-                        <input type="submit" class="btn btn-success float-lg-right" value="Giriş Yap"
+                        <a href="{% url 'forgot-password' %}">I've forgot my password.</a>
+                        <input type="submit" class="btn btn-success float-lg-right" value="Login"
                                style="margin-top: 10px">
-                        <p style="margin-top: 10px;">Hesabınız yok mu? <a href="{% url 'register' %}">Kaydolun.</a></p>
+                        <p style="margin-top: 10px;">No account? <a href="{% url 'register' %}">Create one.</a></p>
                     </div>
                 </div>
             </form>

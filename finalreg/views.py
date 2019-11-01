@@ -38,21 +38,21 @@ def confirm_finalreg(request):
     course_finish_at = "{}/{}/{}".format(course.finish_at.day, course.finish_at.month, course.finish_at.year)
 
     # PREPARING MAIL'S ATTRIBUTES.
-    subject = "Ege UZEM | Kurs kesin kaydınız gerçekleşmiştir.."
+    subject = "Course | Your final registration has done."
     from_mail = settings.EMAIL_HOST_USER
     message = ""
     mail = user.email
     html_msg = """
-    <p style="font-family: Calibri Light; font-size: 20px;">Sayın {},</p>
-    <p style="font-family: Calibri Light; font-size: 18px;">{} adlı kursa kesin kaydınız gerçekleşmiştir.</p>
-    <p style="font-family: Calibri Light; font-size: 18px;">Kursunuz {} ila {} tarihleri arasında gerçekleşecektir.</p>
+    <p style="font-family: Calibri Light; font-size: 20px;">Dear {},</p>
+    <p style="font-family: Calibri Light; font-size: 18px;">Your final registration for {} has done</p>
+    <p style="font-family: Calibri Light; font-size: 18px;">Date: {} - {}</p>
     """.format(user.get_full_name(), course.name, course_start_at, course_finish_at)
 
     # SENDING.
     send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=True)
 
     # MESSAGE TO ADMIN.
-    messages.success(request, '{} e-mail adresinize kesin kayıt bilgisi gönderilmiştir.'.format(user.email),
+    messages.success(request, 'Successfully sent e-mail to {}'.format(user.email),
                      extra_tags='success')
 
     return JsonResponse(data=data)
@@ -75,20 +75,20 @@ def cancel_finalreg(request):
     prereg.delete()
     payment.delete()
 
-    subject = "Ege UZEM | Kesin kaydınız için yaptığınız ödeme reddedilmiştir."
+    subject = "Course | Your final registration failed."
     from_mail = settings.EMAIL_HOST_USER
     message = ""
     mail = user.email
     html_msg = """
-    <p style="font-family: Calibri Light; font-size: 20px;">Sayın {},</p>
-    <p style="font-family: Calibri Light; font-size: 18px;">{} adlı kurs için yaptığınız ödeme reddedilmiştir.</p>
+    <p style="font-family: Calibri Light; font-size: 20px;">Dear {},</p>
+    <p style="font-family: Calibri Light; font-size: 18px;">There is a problem about your payment.</p>
     <p style="font-family: Calibri Light; font-size: 18px;">
-    Ödemeniz reddedilmesi hakkında gerekli bilgiler e-mail adresinize kısa bir süre içerisinde bildirilecektir.
+    Please contact with us.
     </p>
     """.format(user.get_full_name(), course.name)
 
     send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=True)
-    messages.success(request, '{} e-mail adresinize ret bilgisi gönderilmiştir.'.format(user.email),
+    messages.success(request, 'Success. E-mail has sent. to {}'.format(user.email),
                      extra_tags='danger')
 
     return JsonResponse(data=data)
@@ -98,18 +98,18 @@ def export_users_xls(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('user-panel'))
     response = HttpResponse(content_type='application/ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="KesinKayitlarListesi_{}.xls"'.format(
+    response['Content-Disposition'] = 'attachment; filename="CertainRegistrationList{}.xls"'.format(
         datetime.datetime.now())
 
     wb = xlwt.Workbook(encoding='utf-8')
-    ws = wb.add_sheet('Kesin_Kayitlar')
+    ws = wb.add_sheet('Final_Registrations')
 
     row_num = 0
 
     font_style = xlwt.XFStyle()
     font_style.font.bold = True
 
-    columns = ['Adı', 'Soyadı', 'Kursu', 'Ödediği Tutar', 'E-mail', 'Tel no.']
+    columns = ['Name', 'Last Name', 'Course', 'Paid Price', 'E-mail', 'Tel no.']
 
     for col_num in range(len(columns)):
         ws.write(row_num, col_num, columns[col_num], font_style)
@@ -138,16 +138,15 @@ def finalreg_sendmail(request, code):
     if form.is_valid():
         msg = form.cleaned_data.get('message', '')
 
-        subject = "Ege UZEM | Yeni Duyuru"
+        subject = "Course | New Announcement"
         from_mail = settings.EMAIL_HOST_USER
         message = ""
         html_msg = """
-        <h2 style="font-family: 'Trebuchet MS';>DUYURU</h2>
+        <h2 style="font-family: 'Trebuchet MS';>ANNOUNCEMENT</h2>
         <p style="font-family: 'Calibri Light'; font-size= 18px;">{}</p>
-        <p>Ege Üni. UZEM tarafından gönderilmiştir.</p>
         """.format(msg)
 
         for mail in mails:
             send_mail(subject, message, from_mail, [mail], html_message=html_msg, fail_silently=False)
-        messages.success(request, 'Duyuru {} kişiye başarıyla gönderildi.'.format(len(mails)), extra_tags='success')
+        messages.success(request, 'Announcement has sent to {} users successfully.'.format(len(mails)), extra_tags='success')
     return render(request, 'admin/send-notice.html', context={'form': form, 'course_code':code, 'profiles':profiles})

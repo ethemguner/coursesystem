@@ -1,7 +1,7 @@
 {% load static %}
-<nav class="navbar navbar-expand-lg navbar-light bg-dark fixed-top"
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top"
      style="border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;">
-    <nav class="navbar navbar-light bg-dark">
+    <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="{% url 'user-panel' %}">
             <img src="{% static 'img/ege.png' %}" style="height: 85px; width: 85px; margin-top: 0;"
                  class="nav-img d-inline-block align-top" alt="">
@@ -14,37 +14,37 @@
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-texts nav-link" href="{% url 'user-panel' %}" style="color: floralwhite">
-                    Anasayfa
+                <a class="nav-texts nav-link" href="{% url 'user-panel' %}" style="color: black;">
+                    Homepage
                     <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item dropdown admin-nav-texts">
 
                 <a class="nav-texts nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" style="color: whitesmoke">
-                    Kurs Talep
+                   aria-haspopup="true" aria-expanded="false" style="color: black;">
+                    Course Request
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="font-size: 19px;">
                     <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-given-request' %}">
-                        Kurs Vermek İstiyorum
+                        I want to give a course
                     </a>
                     <a class="dropdown-item dropdown-menu-texts" href="{% url 'course-taken-request' %}">
-                        Kurs Almak İstiyorum
+                        I want to take a course
                     </a>
                 </div>
             </li>
             </li>
             <li class="nav-item">
-                <a class="nav-texts nav-link" href="{% url 'update' %}" style="color: floralwhite">
-                    Profilim
+                <a class="nav-texts nav-link" href="{% url 'update' %}" style="color: black;">
+                    My Profile
                 </a>
             </li>
         </ul>
         <span class="navbar-text"
-              style="color: lightgray; font-family: Bahnschrift Light; font-size: 18px; margin-right: 25px;">
-                <p>{{ request.user.get_full_name }}, hoşgeldiniz.</p>
-            <p class="float-lg-right"> <a href="{% url 'logout' %}" style="color: lightgray;"><i
-                    class="fa fa-sign-out"></i> Çıkış yap.</a></p>
+              style="color: gray; font-family: Bahnschrift Light; font-size: 18px; margin-right: 25px;">
+                <p>Welcome, {{ request.user.get_full_name }}.</p>
+            <p class="float-lg-right"> <a href="{% url 'logout' %}" style="color: gray;"><i
+                    class="fa fa-sign-out"></i> Logout</a></p>
             </span>
     </div>
 </nav>

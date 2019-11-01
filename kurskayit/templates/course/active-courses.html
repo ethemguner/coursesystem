@@ -45,7 +45,7 @@
         {% include 'modal.html' %}
         {% include 'admin/admin-navbar.html' %}
         <div class="col-lg-6 offset-3">
-            <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Kesin Kayıtlar
+            <h1 class="text-center course-prereg-header" style="margin-top: 75px; color: darkblue">Certain Registrations
                 ({{ finalregs.count }})</h1>
             <hr>
         </div>
@@ -59,19 +59,19 @@
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;">#</th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    AD & SOYAD
+                                    NAME & LASTNAME
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KURSU
+                                    COURSE
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    KAYIT TARİHİ
+                                    REGISTRATION DATE
                                 </th>
                                 <th scope="col" style="font-family: 'Trebuchet MS', serif; font-size: 15px;"
                                     class="text-center">
-                                    DETAYLAR
+                                    DETAILS
                                 </th>
                             </tr>
                             </thead>
@@ -98,7 +98,7 @@
                                                     other_phone="{{ finalreg.user.profile.other_phone }}"
                                                     mail="{{ finalreg.user.email }}"
                                                     url="{% url 'detail' %}">
-                                                <i class="fa fa-info-circle"></i> İletişim Bilgileri
+                                                <i class="fa fa-info-circle"></i> Contact Info
                                             </button>
                                         </div>
                                     </td>
@@ -106,17 +106,17 @@
                             {% empty %}
                                 <tr>
                                     <th scope="row">1</th>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
-                                    <td scope="row" class="text-danger text-center">BİLGİ YOK</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO.</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO.</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO.</td>
+                                    <td scope="row" class="text-danger text-center">NO INFO.</td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                         <button class="btn btn-success float-lg-right">
                             <a href="{% url 'create-excel' %}" style="color:whitesmoke">
-                                <i class="fa fa-file-excel-o"></i> Excel'e Yazdır</a>
+                                <i class="fa fa-file-excel-o"></i> Print Excel</a>
                         </button>
                     </div>
                 </div>

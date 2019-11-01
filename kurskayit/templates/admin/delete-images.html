@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block TITLE %}Belgeleri Sil{% endblock %}
+{% block TITLE %}Document Control{% endblock %}
 
 {% block HEAD %}
     <script rel="script" type="text/javascript">
 
         $(document).ready(function () {
             $(".deleteImages").click(function () {
-                if (confirm('Belgeler silinecektir. Emin misiniz?')) {
+                if (confirm('Are you sure?')) {
                     var $this = $(this);
                     var $url = $this.attr('url');
 
@@ -37,12 +37,12 @@
         <div class="row justify-content-center">
             <div class="col-lg-8" style="margin-top: 75px;">
                 <div class="text-center">
-                    <h1 style="color: darkblue; font-family: Bahnschrift">Kullanıcı Belge Kontrol</h1>
-                    <p><b><u>UYARI:</u></b> {{ users|length }} adet kullanıcının belge kontrolü yapılacaktır.</p>
-                    <p>Belge geçerlilik süresi dolanların (1 yıl) belgeleri silinecektir ve bilgi gönderilecektir.</p>
+                    <h1 style="color: darkblue; font-family: Bahnschrift">User Document Control</h1>
+                    <p><b><u>UYARI:</u></b> {{ users|length }} users' document will be control.</p>
+                    <p>Document will be deleted whose validity period has finished.</p>
                     <button class="deleteImages btn btn-danger" type="submit"
                             url= {% url 'image-control' %}>
-                        Kontrolü Başlat
+                        Start the Control
                     </button>
                 </div>
             </div>
