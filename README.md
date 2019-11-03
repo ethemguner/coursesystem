@@ -10,5 +10,5 @@ Password: 123123
 You can also see the management panel with this account at /panel. You'll be there when you login. 
 To see users' panel, /auth/user-panel/ is the url adress.
 
-#Not
+# Not
 This isn't an online course system.
