@@ -2,7 +2,7 @@
 A course browsering, adding, editing system. Live at -> https://ethemguner.pythonanywhere.com/
 
 # Test Account
-At https://ethemguner.pythonanywhere.com/ you can use this account:
+You can use this account:
 
 Username: testuser
 Password: 123123
