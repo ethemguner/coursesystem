@@ -11,4 +11,4 @@ You can also see the management panel with this account at /panel. You'll be the
 To see users' panel, /auth/user-panel/ is the url adress.
 
 # Note
-This isn't an online course system.
+This isn't an online course system. You can assume that you've a course firm that giving courses face-to-face. This web site created on this base.
