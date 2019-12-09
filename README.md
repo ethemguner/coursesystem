@@ -1,5 +1,5 @@
 # coursesystem
-A course browsering, adding, editing system. Live at -> https://ethemguner.pythonanywhere.com/
+A course browsering, adding, editing system.
 
 # Test Account
 You can use this account:
