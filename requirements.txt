@@ -1,4 +1,4 @@
-Django==2.2.5
+Django==2.2.13
 Pillow==6.2.0
 PyPDF2==1.26.0
 Unidecode==1.1.1
